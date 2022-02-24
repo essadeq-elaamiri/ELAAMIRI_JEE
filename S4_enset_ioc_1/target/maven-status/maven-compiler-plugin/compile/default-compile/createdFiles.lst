@@ -1,0 +1,7 @@
+metier\MetierImp.class
+dao\DAOImp.class
+metier\IMetier.class
+presentation\Presentation.class
+dao\IDAO.class
+presentation\PresSpringXML.class
+dao\DAOImp2.class
