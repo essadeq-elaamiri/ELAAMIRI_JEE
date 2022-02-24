@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository contains all my activities of Java Entreprise Edition (JEE) during the S4 at ENSET-M II-BDCC2.
+This repository contains all my activities of Java Entreprise Edition (JEE) class during the S4 at ENSET-M II-BDCC2.
 
 ## Activities
 
