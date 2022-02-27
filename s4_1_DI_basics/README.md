@@ -4,23 +4,23 @@
 
 ### Structer to be implemented
 
-![Uml class diagram ](screenshots/Screenshot_1.png)
+![Uml class diagram ](screenshots/Screenshot_1.png).
 
 ### Using Static instanciation
 
-Injecting by setter
-![Inject dependency using setter ](screenshots/stat_setter.JPG)
-Result
-![Inject dependency using setter ](screenshots/stat_setter_res.JPG)
-Injecting by constructor
+Injecting by setter.
+![Inject dependency using setter ](screenshots/stat_setter.JPG).
+Result.
+![Inject dependency using setter ](screenshots/stat_setter_res.JPG).
+Injecting by constructor.
 
-![Inject dependency using constructor ](screenshots/stat_const.JPG)
+![Inject dependency using constructor ](screenshots/stat_const.JPG).
 
 ### Using dynamic instanciation
 
-Injecting by setter
+Injecting by setter.
 
-![Inject dependency using setter ](screenshots/dynamique_setter.JPG)
-Injecting by constructor
+![Inject dependency using setter ](screenshots/dynamique_setter.JPG).
+Injecting by constructor.
 
-![Inject dependency using constructor ](screenshots/dynamique_const.JPG)
+![Inject dependency using constructor ](screenshots/dynamique_const.JPG).
