@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="S4_enset_ioc_1" />
         <module name="S4-enset-ioc-spring-1" />
       </profile>
     </annotationProcessing>
