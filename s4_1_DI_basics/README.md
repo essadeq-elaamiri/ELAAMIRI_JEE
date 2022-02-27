@@ -2,6 +2,6 @@
 
 ### Using Static instanciation
 
-![Inject dependency using setter ](screenshots/stat_setter.jpg)
-![Inject dependency using setter ](screenshots/stat_setter_res.jpg)
-![Inject dependency using constructor ](screenshots/stat_const.jpg)
+![Inject dependency using setter ](screenshots/stat_setter.JPG)
+![Inject dependency using setter ](screenshots/stat_setter_res.JPG)
+![Inject dependency using constructor ](screenshots/stat_const.JPG)
