@@ -9,10 +9,15 @@
 ### Using XML configuartion file
 
 configuration XML file.
+
 ![Inject dependency using xml config file ](screenshots/spring_xml.JPG).
+
 Injecting by property.
+
 ![Inject dependency using property ](screenshots/spring_xml_setter.JPG).
+
 Injecting constructor.
+
 ![Inject dependency using constructor ](screenshots/spring_xml_const.JPG).
 
 Main.
