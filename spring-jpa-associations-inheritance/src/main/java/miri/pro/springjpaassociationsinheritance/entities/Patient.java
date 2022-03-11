@@ -3,11 +3,12 @@ package miri.pro.springjpaassociationsinheritance.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
-
+@Component
 @Entity
 @Data
 @AllArgsConstructor

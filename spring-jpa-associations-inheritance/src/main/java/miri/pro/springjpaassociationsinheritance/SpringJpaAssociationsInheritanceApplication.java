@@ -18,10 +18,8 @@ public class SpringJpaAssociationsInheritanceApplication {
 	}
 
 	@Bean
-	CommandLineRunner start(
-							){
+	CommandLineRunner start( DoctorRepository doctorRepository){
 		return args -> {
-
 			Stream.of("Essadeq", "Mariam", "Oumaima", "Ali").
 					forEach((name)->{
 						Doctor doctor;
@@ -29,8 +27,27 @@ public class SpringJpaAssociationsInheritanceApplication {
 						doctor.setName(name);
 						doctor.setEmail(name.concat("@gmail.com"));
 						doctor.setSpeciality(Stream.of("Dentist", "Cardio", "Psycho").findAny().toString());
-
+						doctorRepository.save(doctor);
 					});
 		};
 	}
+	/*
+	@Bean
+	 CommandLineRunner run(DoctorRepository doctorRepository){
+		return new CommandLineRunner() {
+			@Override
+			public void run(String... args) throws Exception {
+				Stream.of("Essadeq", "Mariam", "Oumaima", "Ali").
+						forEach((name)->{
+							Doctor doctor;
+							doctor = new Doctor();
+							doctor.setName(name);
+							doctor.setEmail(name.concat("@gmail.com"));
+							doctor.setSpeciality(Stream.of("Dentist", "Cardio", "Psycho").findAny().toString());
+							//doctorRepository.
+
+				});
+			}
+		};
+	}*/
 }
