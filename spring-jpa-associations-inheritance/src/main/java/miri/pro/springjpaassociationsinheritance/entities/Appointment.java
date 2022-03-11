@@ -14,8 +14,8 @@ import java.util.Date;
 public class Appointment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
     @Temporal(TemporalType.DATE)
     private Date date;
     private boolean canceled;
