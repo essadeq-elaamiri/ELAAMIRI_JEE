@@ -14,12 +14,8 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Doctor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String email;
+public class Doctor extends Person{
+
     private String speciality;
 
     @OneToMany(mappedBy = "doctor")

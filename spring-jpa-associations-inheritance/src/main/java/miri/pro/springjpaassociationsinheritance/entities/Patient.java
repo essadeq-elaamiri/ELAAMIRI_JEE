@@ -12,12 +12,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String name;
-    private String email;
+public class Patient extends Person{
+
     @Temporal(TemporalType.DATE)
     private Date birth;
     @OneToMany(mappedBy = "patient")
