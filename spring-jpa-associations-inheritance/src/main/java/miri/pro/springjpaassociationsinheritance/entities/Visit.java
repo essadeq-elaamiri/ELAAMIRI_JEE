@@ -1,5 +1,6 @@
 package miri.pro.springjpaassociationsinheritance.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Visit { // consultation
     private Date visitDate;
     private String consultationReport;
     @OneToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Appointment appointment;
 
 
