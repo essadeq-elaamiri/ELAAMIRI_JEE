@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients List</title>
+
+    <!--<link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">--><!-- includes the webjars/bootstrap (dependency) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-5 mt-5">Patients List</h1>
+        <a th:href="@{/addNewPatient}" class="btn btn-sm btn-outline-dark text-uppercase mb-4 mt-3"> <i class="fas fa-plus"></i> add new patient</a>
+        <table class="table table-responsive table-striped border">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Birth Day</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="patient : ${patientsList}">
+                    <td th:text="${patient.getId()}"></td>
+                    <td th:text="${patient.getFirstName()}"></td>
+                    <td th:text="${patient.getLastName()}"></td>
+                    <td th:text="${patient.getBirthDate()}"></td>
+                    <td th:text="${patient.getEmail()}"></td>
+                    <td> <a th:href="@{/editPatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                        <a th:href="@{/deletePatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>
