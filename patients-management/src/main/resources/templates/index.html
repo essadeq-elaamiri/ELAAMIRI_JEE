@@ -10,9 +10,35 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mb-5 mt-5">Patients List</h1>
+        <h1 class="mb-2 mt-4 text-uppercase">Patients List </h1>
+        <h5>
+            <span class="badge bg-secondary" th:text="${'Total number: ' + totalElements}"></span>
+            <span class="badge bg-warning" th:text="${'page: '+ currentPage +'/'+ totalPages}"></span>
+        </h5>
         <a th:href="@{/addNewPatient}" class="btn btn-sm btn-outline-dark text-uppercase mb-4 mt-3"> <i class="fas fa-plus"></i> add new patient</a>
-        <table class="table table-responsive table-striped border">
+        <div class="card" >
+            <div class="card-header">
+                Search a patient by first or last name
+            </div>
+            <div class="card-body">
+                <form th:action="@{/}" action="#" >
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Tipe your key word" name="searchKeyWord" th:value="${searchKeyWord}"  aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+                    </div>
+                </form>
+                <p class="alert alert-info" th:unless="${noSearchResultFoundMsg == null}" th:text="${noSearchResultFoundMsg}"> //noSearchResultFoundMsg
+            </div>
+        </div>
+
+        <!-- pagination-->
+        <ul class="nav nav-pills mb-4 mt-4"  >
+            <li th:each="page, status: ${pages}">
+                <!--<a th:text="${status.index}" th:href="@{'/?page='+${status.index}}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
+                <a th:text="${status.index}" th:href="@{/(page= ${status.index}, searchKeyWord=${searchKeyWord})}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>
+            </li>
+        </ul>
+        <table class=" mt-5 table table-responsive table-striped border">
             <thead>
                 <tr>
                     <th>#ID</th>
@@ -30,8 +56,10 @@
                     <td th:text="${patient.getLastName()}"></td>
                     <td th:text="${patient.getBirthDate()}"></td>
                     <td th:text="${patient.getEmail()}"></td>
-                    <td> <a th:href="@{/editPatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()}" ><i class="fas fa-trash"></i></button></td>
+                    <td>
+                        <a th:href="@{/editPatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()}" ><i class="fas fa-trash"></i></button>
+                    </td>
                 </tr> <!-- th:href="@{/deletePatient/{id}(id=${patient.getId()})}" -->
             </tbody>
         </table>

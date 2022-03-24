@@ -5,6 +5,8 @@ import com.elaamiri.patientsmanagement.Errors.PatientNotFoundException;
 import com.elaamiri.patientsmanagement.entities.Patient;
 import com.elaamiri.patientsmanagement.repositories.PatientRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,9 +34,14 @@ public class PatientServiceImp implements PatientService{
     }
 
     @Override
-    public List<Patient> getAllPatientsList() {
+    public Page<Patient> getAllPatientsList(PageRequest pageRequest) {
         // TODO : pagination
-        return patientRepository.findAll(); // video: 1805
+        return patientRepository.findAll(pageRequest); // video: 1805
+    }
+
+    @Override
+    public Page<Patient> getPatientsListByKeyWord(String keyWord, PageRequest pageRequest) {
+        return patientRepository.findAllByFirstNameContainsOrLastNameContains(keyWord, pageRequest);
     }
 
     @Override

@@ -5,9 +5,13 @@ import com.elaamiri.patientsmanagement.entities.Patient;
 import com.elaamiri.patientsmanagement.repositories.PatientRepository;
 import com.elaamiri.patientsmanagement.services.PatientService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 //@RestController in cas we're creating API
@@ -19,8 +23,30 @@ public class PatientController {
     private PatientService patientService;
 
     @GetMapping("/") // hey you! if a http get method call the path URL "/", call this function
-    public String displayPatientsList(Model model){
-        model.addAttribute("patientsList", patientService.getAllPatientsList());
+    // adding pagination
+    public String displayPatientsList(Model model,
+                                      @RequestParam(name = "page", defaultValue = "0") int page,
+                                      @RequestParam(name = "size", defaultValue = "5") int size,
+                                      @RequestParam(name = "searchKeyWord", defaultValue = "") String searchKeyWord){
+        Page<Patient> patientPage;
+        // if there a searchKeyWord so search with it if not get all
+        if(!searchKeyWord.isEmpty() && searchKeyWord != null){
+            patientPage = patientService.getPatientsListByKeyWord(searchKeyWord, PageRequest.of(page, size));
+            if (patientPage.isEmpty()){
+                model.addAttribute("noSearchResultFoundMsg", "Sorry !No patient found with the given search ("+ searchKeyWord +").");
+                patientPage = patientService.getAllPatientsList(PageRequest.of(page, size));
+            }
+            model.addAttribute("searchKeyWord", searchKeyWord);
+        }
+        else{
+            patientPage = patientService.getAllPatientsList(PageRequest.of(page, size));
+        }
+        model.addAttribute("totalElements", patientPage.getTotalElements());
+        model.addAttribute("totalPages", patientPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("patientsList", patientPage.getContent());
+        model.addAttribute("pages", new int[patientPage.getTotalPages()]);
+
         // the attribute will be accessible from the view
         return "index"; // index is the name of the view associated to the path
     }
@@ -59,7 +85,7 @@ public class PatientController {
 */
     @GetMapping("/deletePatient/{id}")
     public String deletePatient(@PathVariable(value = "id")String id){
-        //System.out.println(id);
+        //System.out.println(currentPage);
         patientService.deletePatientById(id);
         return "redirect:/";
     }

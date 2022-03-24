@@ -20,7 +20,7 @@ public class Patient {
     //@Column(name = "PATIENT_ID")
     private String id;
     private String firstName;
-    private String LastName;
+    private String lastName;
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
