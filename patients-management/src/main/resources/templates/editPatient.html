@@ -12,16 +12,8 @@
     <h1 class="mt-4 mb-5">Edit patient : <span class="badge b bg-secondary"  th:text="${patientObject.getFirstName() +' ' +patientObject.getLastName()}"></span></h1>
     <div class="row">
         <div class="col-6">
-            <form th:action="@{/saveEditedPatient}" th:object="${patientObject}" method="POST" action="#">
-                <input
-                        type="hidden"
-                        disabled
-                       name="id"
-                       class="form-control"
-                       id="id"
-                       th:field="*{id}"
-
-                        >
+            <form th:action="@{/saveNewPatient}" th:object="${patientObject}" method="POST" action="#">
+                <input type="hidden" name="id" class="form-control"  id="id" th:field="*{id}"/>
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First name</label>
                     <input type="text"

@@ -18,14 +18,16 @@ public class PatientServiceImp implements PatientService{
     private PatientRepository patientRepository;
 
     @Override
-    public Patient insertPatient(Patient patient) throws EmptyObjectException {
+    public Patient insertPatient(Patient patient) {
+        // TODO: validations , exceptions ...
         if(patient == null){
             throw new EmptyObjectException("Patient object is null!");
         }
-        if(patient.getId() == null || patient.getId().isEmpty()){
+        if(patient.getId() == null){
+            System.out.println("Empty id in: " +patient.getId());
             patient.setId(UUID.randomUUID().toString());
         }
-        // TODO: validations , exceptions ...
+        System.out.println("Empty id out: " +patient.getId().isEmpty());
         return patientRepository.save(patient);
     }
 
@@ -40,5 +42,10 @@ public class PatientServiceImp implements PatientService{
         Optional<Patient> optionalPatient = patientRepository.findById(id);
         if(optionalPatient.isPresent()) return optionalPatient.get();
         else throw new PatientNotFoundException("No patient with this id:" +id + " found!");
+    }
+
+    @Override
+    public void deletePatientById(String id) {
+         patientRepository.deleteById(id);
     }
 }

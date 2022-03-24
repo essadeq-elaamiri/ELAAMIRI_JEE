@@ -12,5 +12,6 @@ public interface PatientService {
     Patient insertPatient(Patient patient) throws EmptyObjectException; // TODO: handle ID
     List<Patient> getAllPatientsList();
     Patient getPatientById(String id) throws PatientNotFoundException;
+    void deletePatientById(String id);
 
 }

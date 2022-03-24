@@ -31,12 +31,12 @@
                     <td th:text="${patient.getBirthDate()}"></td>
                     <td th:text="${patient.getEmail()}"></td>
                     <td> <a th:href="@{/editPatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                        <a th:href="@{/deletePatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a></td>
-                </tr>
+                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()}" ><i class="fas fa-trash"></i></button></td>
+                </tr> <!-- th:href="@{/deletePatient/{id}(id=${patient.getId()})}" -->
             </tbody>
         </table>
 
     </div>
-
+    <script src="/main.js"></script>
 </body>
 </html>

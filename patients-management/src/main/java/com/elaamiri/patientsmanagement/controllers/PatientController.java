@@ -35,11 +35,7 @@ public class PatientController {
 
     @PostMapping("/saveNewPatient") // hey you! if a post request this url, call the folloming function
     public String saveNewPatient(@ModelAttribute("patientObject") Patient patient){
-        try{
-            patientService.insertPatient(patient);
-        }catch (Exception exception){
-            exception.getStackTrace();
-        }
+        patientService.insertPatient(patient);
         return  "redirect:/";// redirect to url '/'
     }
 
@@ -53,17 +49,19 @@ public class PatientController {
         model.addAttribute("patientObject", patient);
         return "editPatient";
     }
-
+/*
     //saveEditedPatient
     @PostMapping("saveEditedPatient")
     public String saveEditedPatient(@ModelAttribute("patientObject")Patient patient){
         patientService.insertPatient(patient);
         return "redirect:/";
     }
-
-    @DeleteMapping("/deletePatient/{id}")
-    public String deletePatient(){
-        return null;
+*/
+    @GetMapping("/deletePatient/{id}")
+    public String deletePatient(@PathVariable(value = "id")String id){
+        //System.out.println(id);
+        patientService.deletePatientById(id);
+        return "redirect:/";
     }
 
 
