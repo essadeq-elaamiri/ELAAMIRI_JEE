@@ -14,6 +14,7 @@
         <h5>
             <span class="badge bg-secondary" th:text="${'Total number: ' + totalElements}"></span>
             <span class="badge bg-warning" th:text="${'page: '+ currentPage +'/'+ totalPages}"></span>
+            <a class="btn btn-outline-secondary btn-sm text-uppercase" th:href="@{/apiv1/patients}" >get data as json (API)</a>
         </h5>
         <a th:href="@{/addNewPatient}" class="btn btn-sm btn-outline-dark text-uppercase mb-4 mt-3"> <i class="fas fa-plus"></i> add new patient</a>
         <div class="card" >
@@ -57,8 +58,8 @@
                     <td th:text="${patient.getBirthDate()}"></td>
                     <td th:text="${patient.getEmail()}"></td>
                     <td>
-                        <a th:href="@{/editPatient/{id}(id=${patient.getId()})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()}" ><i class="fas fa-trash"></i></button>
+                        <a th:href="@{/editPatient/{id}(id=${patient.getId()},page= ${currentPage}, searchKeyWord=${searchKeyWord})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()+'?page='+currentPage+'&searchKeyWord='+searchKeyWord}" ><i class="fas fa-trash"></i></button>
                     </td>
                 </tr> <!-- th:href="@{/deletePatient/{id}(id=${patient.getId()})}" -->
             </tbody>

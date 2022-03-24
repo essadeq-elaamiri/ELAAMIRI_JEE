@@ -60,19 +60,30 @@ public class PatientController {
     }
 
     @PostMapping("/saveNewPatient") // hey you! if a post request this url, call the folloming function
-    public String saveNewPatient(@ModelAttribute("patientObject") Patient patient){
+    public String saveNewPatient(@ModelAttribute("patientObject") Patient patient,
+                                 @RequestParam(name = "page", defaultValue = "0") int page,
+                                 @RequestParam(name = "size", defaultValue = "5") int size,
+                                 @RequestParam(name = "searchKeyWord", defaultValue = "") String searchKeyWord){
         patientService.insertPatient(patient);
-        return  "redirect:/";// redirect to url '/'
+        return "redirect:/?page="+page+"&size="+size+"&searchKeyWord="+searchKeyWord;
     }
 
     //editPatient
     //deletePatient
     @GetMapping("/editPatient/{id}")// show the view
-    public String editPatient(@PathVariable(value = "id")String id, Model model){
+    public String editPatient(@PathVariable(value = "id")String id,
+                              Model model,
+                              @RequestParam(name = "page", defaultValue = "0") int page,
+                              @RequestParam(name = "size", defaultValue = "5") int size,
+                              @RequestParam(name = "searchKeyWord", defaultValue = "") String searchKeyWord){
         //get Patient from DB
         Patient patient = patientService.getPatientById(id);
         // send it to the view
         model.addAttribute("patientObject", patient);
+        model.addAttribute("searchKeyWord", searchKeyWord);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
         return "editPatient";
     }
 /*
@@ -84,10 +95,20 @@ public class PatientController {
     }
 */
     @GetMapping("/deletePatient/{id}")
-    public String deletePatient(@PathVariable(value = "id")String id){
+    public String deletePatient(@PathVariable(value = "id")String id,
+                                @RequestParam(name = "page", defaultValue = "0") int page,
+                                @RequestParam(name = "size", defaultValue = "5") int size,
+                                @RequestParam(name = "searchKeyWord", defaultValue = "") String searchKeyWord){
         //System.out.println(currentPage);
         patientService.deletePatientById(id);
-        return "redirect:/";
+        return "redirect:/?page="+page+"&size="+size+"&searchKeyWord="+searchKeyWord;
+    }
+
+    // Rest API
+    @GetMapping("/apiv1/patients") // by default, here the ServletDispatcher will understand there it will not return a view
+    @ResponseBody // All  RestController's methods are @ResponseBody
+    public List<Patient> getPatientsList(){
+        return  patientService.getAllPatientsList(PageRequest.of(0, 50)).getContent();
     }
 
 
