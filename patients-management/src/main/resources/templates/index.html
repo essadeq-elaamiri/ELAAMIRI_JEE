@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html
+        lang="en" xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="template"
+>
 <head>
     <meta charset="UTF-8">
     <title>Patients List</title>
@@ -9,7 +13,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <div class="container">
+    <div class="container" layout:fragment="indexPageContent">
         <h1 class="mb-2 mt-4 text-uppercase">Patients List </h1>
         <h5>
             <span class="badge bg-secondary" th:text="${'Total number: ' + totalElements}"></span>
