@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html
-        lang="en" xmlns:th="http://www.thymeleaf.org"
+        lang="en"
+        xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="template"
 >
@@ -9,18 +10,19 @@
     <title>Patients List</title>
 
     <!--<link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">--><!-- includes the webjars/bootstrap (dependency) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
+<!--    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>-->
 </head>
 <body>
-    <div class="container" layout:fragment="indexPageContent">
+    <div class="container card mb-5 p-4" layout:fragment="indexPageContent">
         <h1 class="mb-2 mt-4 text-uppercase">Patients List </h1>
         <h5>
             <span class="badge bg-secondary" th:text="${'Total number: ' + totalElements}"></span>
             <span class="badge bg-warning" th:text="${'page: '+ currentPage +'/'+ totalPages}"></span>
             <a class="btn btn-outline-secondary btn-sm text-uppercase" th:href="@{/apiv1/patients}" >get data as json (API)</a>
         </h5>
-        <a th:href="@{/addNewPatient}" class="btn btn-sm btn-outline-dark text-uppercase mb-4 mt-3"> <i class="fas fa-plus"></i> add new patient</a>
+        <!--<a th:href="@{/addNewPatient}" class="btn btn-sm btn-outline-dark text-uppercase mb-4 mt-3"> <i class="fas fa-plus"></i> add new patient</a>-->
+<!--        <span th:unless="${patientSuccessInsertionMsg.isEmpty()}" class="alert alert-success text-center"  th:text="${patientSuccessInsertionMsg}"></span>-->
         <div class="card" >
             <div class="card-header">
                 Search a patient by first or last name
@@ -32,18 +34,46 @@
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
-                <p class="alert alert-info" th:unless="${noSearchResultFoundMsg == null}" th:text="${noSearchResultFoundMsg}"> //noSearchResultFoundMsg
             </div>
         </div>
 
         <!-- pagination-->
-        <ul class="nav nav-pills mb-4 mt-4"  >
-            <li th:each="page, status: ${pages}">
-                <!--<a th:text="${status.index}" th:href="@{'/?page='+${status.index}}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
-                <a th:text="${status.index}" th:href="@{/(page= ${status.index}, searchKeyWord=${searchKeyWord})}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>
-            </li>
-        </ul>
-        <table class=" mt-5 table table-responsive table-striped border">
+        <div class="flex-row justify-content-center">
+            <ul class="nav nav-pills mb-2 mt-4 flex-row justify-content-center"  >
+                <li>
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=0, searchKeyWord=${searchKeyWord})}"/>
+                    <i class="fa-solid fa-angles-left"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=${currentPage >0?currentPage - 1: currentPage}, searchKeyWord=${searchKeyWord})}">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                </li>
+                <li th:each="page, status: ${pages10}"> <!-- pages -->
+                    <!--<a th:text="${status.index}" th:href="@{'/?page='+${status.index}}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
+                    <!--<a th:text="${status.index}" th:href="@{/(page= ${status.index}, searchKeyWord=${searchKeyWord})}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
+                    <a th:text="${page}"
+                       th:href="@{/(page= ${page}, searchKeyWord=${searchKeyWord})}"
+                       th:class="'btn btn-sm  mx-1 ' + ${page == currentPage ? 'btn-dark' : 'btn-outline-dark'}" >
+
+                    </a>
+                </li>
+                <li>
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=${currentPage < totalPages -1 ?currentPage + 1: currentPage}, searchKeyWord=${searchKeyWord})}">
+                        <i class="fa-solid fa-angle-right"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="btn btn-sm btn-outline-dark mx-1"  th:href="@{/(page=${#lists.size(pages)-1}, searchKeyWord=${searchKeyWord})}"/>
+                    <i class="fa-solid fa-angles-right"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div >
+        <!-- end pagination -->
+        <table class=" mt-5 mb-5 table table-responsive table-striped border">
             <thead>
                 <tr>
                     <th>#ID</th>
@@ -63,11 +93,16 @@
                     <td th:text="${patient.getEmail()}"></td>
                     <td>
                         <a th:href="@{/editPatient/{id}(id=${patient.getId()},page= ${currentPage}, searchKeyWord=${searchKeyWord})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
-                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()+'?page='+currentPage+'&searchKeyWord='+searchKeyWord}" ><i class="fas fa-trash"></i></button>
+                        <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()+'?page='+currentPage+'&searchKeyWord='+(searchKeyWord == null ? '' : searchKeyWord)}" ><i class="fas fa-trash"></i></button>
                     </td>
                 </tr> <!-- th:href="@{/deletePatient/{id}(id=${patient.getId()})}" -->
+
             </tbody>
         </table>
+        <!-- show it unless (except if ) noSearchResultFoundMsg is null-->
+        <!-- Show it, except if noSearchResultFoundMsg == null, do not-->
+        <p class="alert alert-info" th:unless="${noSearchResultFoundMsg == null}" th:text="${noSearchResultFoundMsg}">
+
 
     </div>
     <script src="/main.js"></script>

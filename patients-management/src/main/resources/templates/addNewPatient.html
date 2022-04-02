@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template"
+>
 <head>
     <meta charset="UTF-8">
     <title>add new patient</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" rel="stylesheet"/>
+
 
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-4 mb-5">Add a new patient</h1>
+    <div class="container card pb-4 mb-5 " layout:fragment="indexPageContent">
+        <h1 class="mt-4 mb-5 text-center">Add a new patient</h1>
         <div class="row">
-            <div class="col-6">
+            <div class="col-6 offset-3">
                 <form th:action="@{saveNewPatient}" th:object="${patientObject}" method="POST" action="#">
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First name</label>
@@ -19,28 +21,52 @@
                                name="firstName"
                                class="form-control"
                                id="firstName"
-                               th:field="*{firstName}">
+                               th:field="*{firstName}"
+                               th:value="${patientObject.firstName}">
+                        <span  class="text-danger" th:errors="${patientObject.firstName}"></span>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last name</label>
-                        <input type="text" name="lastName" class="form-control" id="lastName"
-                               th:field="*{lastName}">
+                        <input type="text"
+                               name="lastName"
+                               class="form-control"
+                               id="lastName"
+                               th:field="*{lastName}"
+                                th:value="${patientObject.lastName}">
+                        <span class="text-danger " th:errors="${patientObject.lastName}"></span>
+
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
-                        <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" th:field="*{email}">
+                        <input type="email"
+                               name="email"
+                               class="form-control"
+                               id="email"
+                               aria-describedby="emailHelp"
+                               th:field="*{email}"
+                                th:value="${patientObject.email}">
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                        <span class="text-danger " th:errors="${patientObject.email}"></span>
+
 
                     </div>
                     <div class="mb-3">
                         <label for="birthDate" class="form-label">Birth date</label>
-                        <input type="date" name="birthDate" class="form-control" id="birthDate" th:field="*{birthDate}">
+                        <input type="date"
+                               name="birthDate"
+                               class="form-control"
+                               id="birthDate"
+                               th:field="*{birthDate}"
+                               th:value="${patientObject.birthDate}"
+                                >
+                        <span class="text-danger " th:errors="${patientObject.birthDate}"></span>
+
                     </div>
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col">
                             <button type="submit" class="btn btn-dark text-light btn-sm text-uppercase"><i class="fas fa-check"></i> save</button>
                         </div>
-                        <div class="col-9">
+                        <div class="col d-flex flex-row-reverse">
                             <a th:href="@{/}" class="btn btn-outline-warning text-dark btn-sm text-uppercase"><i class="fa-solid fa-arrow-left-long"></i> To the list</a>
                         </div>
                     </div>
