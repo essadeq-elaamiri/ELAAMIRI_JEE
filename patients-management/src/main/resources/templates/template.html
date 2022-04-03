@@ -31,7 +31,7 @@
                     <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
                 </li>
 
-                <li class="nav-item dropdown ">
+                <li class="nav-item dropdown " sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle text-light" th:href="@{/patients}" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         Patients
