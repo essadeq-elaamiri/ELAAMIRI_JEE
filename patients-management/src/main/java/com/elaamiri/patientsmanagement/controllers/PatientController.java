@@ -31,19 +31,29 @@ public class PatientController {
      */
     private PatientService patientService;
 
-    @GetMapping("/") // hey you! if a http get method call the path URL "/", call this function
+    //home
+    @GetMapping("/")
+    public String showHome(){
+        return "home";
+    }
+    //home
+    @GetMapping("/home")
+    public String showHome2(){
+        return "home";
+    }
+
+
+    @GetMapping("/patients") // hey you! if a http get method call the path URL "/", call this function
     // adding pagination
-    public String displayPatientsList(/*@ModelAttribute("patientSuccessInsertionMsg") String patientSuccessInsertionMsg,*/
-                                      Model model,
+    public String displayPatientsList(Model model,
                                       @RequestParam(name = "page", defaultValue = "0") int page,
                                       @RequestParam(name = "size", defaultValue = "5") int size,
-                                      @RequestParam(name = "searchKeyWord", defaultValue = "") String searchKeyWord){
+                                      @RequestParam(name = "searchKeyWord", defaultValue = "")
+                                              String searchKeyWord){
         Page<Patient> patientPage;
         // if there a searchKeyWord so search with it if not get all
         if(!searchKeyWord.isEmpty() && searchKeyWord != null){
-
             patientPage = patientService.getPatientsListByKeyWord(searchKeyWord, PageRequest.of(page, size));
-
             model.addAttribute("searchKeyWord", searchKeyWord);
         }
         else{
@@ -52,21 +62,15 @@ public class PatientController {
         if(patientPage.isEmpty()){
             model.addAttribute("noSearchResultFoundMsg", "Sorry !No data found.");
         }
-
         model.addAttribute("totalElements", patientPage.getTotalElements());
         model.addAttribute("totalPages", patientPage.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("patientsList", patientPage.getContent());
         model.addAttribute("pages", new int[patientPage.getTotalPages()]);
-        //model.addAttribute("patientSuccessInsertionMsg", patientSuccessInsertionMsg);
-        //
+
         int [] pages10 =  fillPagesArray(page, patientPage.getTotalPages()); // currentPage
-
-
         // send an array of  10 elements (pages)
         model.addAttribute("pages10", pages10);
-
-
         // the attribute will be accessible from the view
         return "index"; // index is the name of the view associated to the path
     }
@@ -190,7 +194,7 @@ public class PatientController {
             patientService.insertPatient(patient);
             // send a success message
             //model.addAttribute("patientSuccessInsertionMsg", "Patient inserted successfully");
-            return "redirect:/?page=" + page + "&size=" + size + "&searchKeyWord=" + searchKeyWord;
+            return "redirect:/patients?page=" + page + "&size=" + size + "&searchKeyWord=" + searchKeyWord;
         }
     }
 
@@ -205,7 +209,7 @@ public class PatientController {
         // TODO: delete
         //System.out.println("from delete: "+ searchKeyWord);
         //System.out.println("from delete null?: "+ (searchKeyWord == null));
-        return "redirect:/?page="+page+"&size="+size+"&searchKeyWord="+(searchKeyWord == null ? "" : searchKeyWord);
+        return "redirect:/patients?page="+page+"&size="+size+"&searchKeyWord="+(searchKeyWord == null ? "" : searchKeyWord);
     }
 
     // Rest API

@@ -4,6 +4,8 @@
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="template"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+
 >
 <head>
     <meta charset="UTF-8">
@@ -28,7 +30,7 @@
                 Search a patient by first or last name
             </div>
             <div class="card-body">
-                <form th:action="@{/}" action="#" >
+                <form th:action="@{/patients}" action="#" >
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Tipe your key word" name="searchKeyWord" th:value="${searchKeyWord}"  aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
@@ -41,12 +43,12 @@
         <div class="flex-row justify-content-center">
             <ul class="nav nav-pills mb-2 mt-4 flex-row justify-content-center"  >
                 <li>
-                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=0, searchKeyWord=${searchKeyWord})}"/>
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/patients(page=0, searchKeyWord=${searchKeyWord})}"/>
                     <i class="fa-solid fa-angles-left"></i>
                     </a>
                 </li>
                 <li>
-                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=${currentPage >0?currentPage - 1: currentPage}, searchKeyWord=${searchKeyWord})}">
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/patients(page=${currentPage >0?currentPage - 1: currentPage}, searchKeyWord=${searchKeyWord})}">
                         <i class="fa-solid fa-angle-left"></i>
                     </a>
                 </li>
@@ -54,18 +56,18 @@
                     <!--<a th:text="${status.index}" th:href="@{'/?page='+${status.index}}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
                     <!--<a th:text="${status.index}" th:href="@{/(page= ${status.index}, searchKeyWord=${searchKeyWord})}" th:class="'btn btn-sm  mx-1 ' + ${status.index == currentPage ? 'btn-dark' : 'btn-outline-dark'}" ></a>-->
                     <a th:text="${page}"
-                       th:href="@{/(page= ${page}, searchKeyWord=${searchKeyWord})}"
+                       th:href="@{/patients(page= ${page}, searchKeyWord=${searchKeyWord})}"
                        th:class="'btn btn-sm  mx-1 ' + ${page == currentPage ? 'btn-dark' : 'btn-outline-dark'}" >
 
                     </a>
                 </li>
                 <li>
-                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/(page=${currentPage < totalPages -1 ?currentPage + 1: currentPage}, searchKeyWord=${searchKeyWord})}">
+                    <a class="btn btn-sm btn-outline-dark mx-1" th:href="@{/patients(page=${currentPage < totalPages -1 ?currentPage + 1: currentPage}, searchKeyWord=${searchKeyWord})}">
                         <i class="fa-solid fa-angle-right"></i>
                     </a>
                 </li>
                 <li>
-                    <a class="btn btn-sm btn-outline-dark mx-1"  th:href="@{/(page=${#lists.size(pages)-1}, searchKeyWord=${searchKeyWord})}"/>
+                    <a class="btn btn-sm btn-outline-dark mx-1"  th:href="@{/patients(page=${#lists.size(pages)-1}, searchKeyWord=${searchKeyWord})}"/>
                     <i class="fa-solid fa-angles-right"></i>
                     </a>
                 </li>
@@ -91,7 +93,7 @@
                     <td th:text="${patient.getLastName()}"></td>
                     <td th:text="${patient.getBirthDate()}"></td>
                     <td th:text="${patient.getEmail()}"></td>
-                    <td>
+                    <td sec:authorize="hasAnyRole('ADMIN')">
                         <a th:href="@{/editPatient/{id}(id=${patient.getId()},page= ${currentPage}, searchKeyWord=${searchKeyWord})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
                         <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()+'?page='+currentPage+'&searchKeyWord='+(searchKeyWord == null ? '' : searchKeyWord)}" ><i class="fas fa-trash"></i></button>
                     </td>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <title>Home</title>
+    <meta name="description" content="error 403">
+    <meta name="keywords" content="error 403, html5, css3, codepen">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/css/error403.css">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+<main layout:fragment="indexPageContent" >
+    <h1>
+        <span class="home text-uppercase">
+        <i  class="fa-solid fa-home"></i>
+          Patient Manager Home
+        </span>
+    </h1>
+
+
+    <p>Yeah, here you will find the best Patient manager ever! </p>
+    <a class="btn btn-outline-light btn-sm" th:href="@{/patients}">Want to ry it ?</a>
+</main>
+</body>
+</html>
