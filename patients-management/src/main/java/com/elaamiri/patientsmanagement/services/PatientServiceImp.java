@@ -46,9 +46,10 @@ public class PatientServiceImp implements PatientService{
 
     @Override
     public Patient getPatientById(String id) throws PatientNotFoundException {
-        Optional<Patient> optionalPatient = patientRepository.findById(id);
-        if(optionalPatient.isPresent()) return optionalPatient.get();
-        else throw new PatientNotFoundException("No patient with this id:" +id + " found!");
+        //Optional<Patient> optionalPatient = patientRepository.findById(id);
+        //if(optionalPatient.isPresent()) return optionalPatient.get();
+        //else throw new PatientNotFoundException("No patient with this id:" +id + " found!");
+        return patientRepository.findById(id).orElse(null);
     }
 
     @Override
