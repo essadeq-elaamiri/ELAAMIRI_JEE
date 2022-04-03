@@ -22,9 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override // spécifier les droits d'accès
     protected void configure(HttpSecurity http) throws Exception {
-        // hey Spring, je veux utiliser un 'form' d'authetification
-        http.formLogin(); //  default login form
-        //http.formLogin().loginPage("/login"); // my own login form
+
         // droits d'acces
 
         //http.authorizeRequests().antMatchers("/", "/home/**").permitAll(); // for all
@@ -36,9 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/patients/**").hasRole("USER")
                 ;
         // toutes les requets nécessite une authentification
-        http.authorizeHttpRequests().anyRequest().authenticated();
+        //http.authorizeHttpRequests().anyRequest().authenticated();
+
+        // hey Spring, je veux utiliser un 'form' d'authetification
+        http.formLogin(); //  default login form
+        //http.formLogin().loginPage("/login"); // my own login form
+
         // configure errors (/error403 is a vue)
         http.exceptionHandling().accessDeniedPage("/error403");
+
 
     }
 
