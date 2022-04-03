@@ -16,8 +16,8 @@ basics of inversion of control (IoC) and dependency injectiion (DI) using SPRING
 
 ### [Activity 3](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/blob/main/spring-jpa-associations-inheritance/)
 
-L'utilisation de Spring jpa, Hibernate pour l'implementation des associations, et l'héritage [Compte_Rendu](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/blob/main/spring-jpa-associations-inheritance/compte_rendu/spring_jpa_hibernate.pdf).
+Usin Spring jpa, Hibernate for the implementation of associations, and inheritance [Compte_Rendu](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/blob/main/spring-jpa-associations-inheritance/compte_rendu/spring_jpa_hibernate.pdf).
 
 ### [Activity 4](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/tree/main/patients-management)
 
-A basic practical activity (Web application to manage patients), using Java SpringBoot, Spring MVC/ thymeleaf and Spring Data JPA.
+A basic practical activity (Web application to manage patients), using Java Spring 5 (SpringBoot, Spring MVC/ thymeleaf, Spring security and Spring Data JPA) [Repport/doc](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/blob/main/patients-management/compteRendu/patients_management_spring_mvc_data_security.pdf) [video_demo_part1](https://youtu.be/9pyiKzWQSbs) [video_demo_part2](https://youtu.be/qACOOJkGmAc).
