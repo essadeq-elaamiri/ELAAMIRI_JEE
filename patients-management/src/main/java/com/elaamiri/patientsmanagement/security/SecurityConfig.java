@@ -1,5 +1,6 @@
 package com.elaamiri.patientsmanagement.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.SpringVersion;
@@ -10,22 +11,31 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
+
     @Override // spécifier les droits d'accès
     protected void configure(HttpSecurity http) throws Exception {
         // hey Spring, je veux utiliser un 'form' d'authetification
         http.formLogin(); //  default login form
         //http.formLogin().loginPage("/login"); // my own login form
         // droits d'acces
-        http.authorizeRequests().antMatchers("/", "/home/**").permitAll(); // for all
-        http.authorizeRequests().antMatchers("/editPatient/**"
+
+        //http.authorizeRequests().antMatchers("/", "/home/**").permitAll(); // for all
+        http.authorizeRequests()
+                .antMatchers("/home", "/").permitAll()
+                .antMatchers("/editPatient/**"
                 , "/deletePatient/**", "/saveEditedPatient/**"
-                , "/saveNewPatient/**", "/addNewPatient/**")
-                .hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("/patients/**").hasRole("USER");
-        // toutes les requets nécissite une authentification
+                , "/saveNewPatient/**", "/addNewPatient/**").hasRole("ADMIN")
+                .antMatchers("/patients/**").hasRole("USER")
+                ;
+        // toutes les requets nécessite une authentification
         http.authorizeHttpRequests().anyRequest().authenticated();
         // configure errors (/error403 is a vue)
         http.exceptionHandling().accessDeniedPage("/error403");
@@ -54,6 +64,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+/*
+    @Override // Spécifier la stratégie avec laquelle Spring Sec va
+    // chercher les utilisateurs authorisés
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        PasswordEncoder passwordEncoder = getPasswordEncoder();
+        auth.jdbcAuthentication() // il doit établir une connction avec la db
+                .dataSource(dataSource)// la même base de donnée de l'app (injectée)
+                .usersByUsernameQuery("select" +
+                        " username as principal " + // pour que Spring savoir que c'est le username
+                        ", password as credentials " +
+                        ", isActive " +
+                        " from users " +
+                        " where username=?") // requete à executée pour récuprirer les users
+                .authoritiesByUsernameQuery("select " +
+                        " username as principal " +
+                        " ,roleName as role " +
+                        " from user_role " +
+                        " where username = ? ");
+                //.rolePrefix("ROLE_"); // 'USER' -> 'ROLE_USER' dans la session
+                //.passwordEncoder(passwordEncoder); // algo pour decrypter les passwords
+
+
+    }*/
 
     @Bean
         // executé au démarrage, et place
