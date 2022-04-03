@@ -1,0 +1,44 @@
+body {
+
+    background: rgba(255, 0, 0, 0.68);
+
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    width: 100vh;
+    height: 100vh;
+}
+
+.num1 {
+
+    font-size: 200px;
+    color: white;
+
+}
+
+
+#img {
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+
+
+}
+
+
+
+h1 {
+    text-align: center;
+    font-size: 35px;
+    color: white;
+}
+
+p {
+    text-align: center;
+    font-size: 20px;
+    color: white;
+}
+
+
