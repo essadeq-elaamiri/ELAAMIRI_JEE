@@ -2,7 +2,11 @@
 
 A basic practical activity, using Java SpringBoot, Spring MVC/ thymeleaf and Spring Data JPA.
 
-### fuctionalities: [Watch demo on YouTube](https://www.youtube.com/watch?v=9pyiKzWQSbs)
+### fuctionalities:
+
+#### [Watch demo on YouTube part 1](https://www.youtube.com/watch?v=9pyiKzWQSbs).
+
+#### [Watch demo on YouTube part 2](https://youtu.be/qACOOJkGmAc).
 
 1. List all patients
 
