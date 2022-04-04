@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.SpringVersion;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,17 +25,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         // droits d'acces
-
-        //http.authorizeRequests().antMatchers("/", "/home/**").permitAll(); // for all
         http.authorizeRequests()
-                .antMatchers("/home", "/").permitAll()
-                .antMatchers("/editPatient/**"
-                , "/deletePatient/**", "/saveEditedPatient/**"
-                , "/saveNewPatient/**", "/addNewPatient/**").hasRole("ADMIN")
-                .antMatchers("/patients/**").hasRole("USER")
-                ;
+                    .antMatchers("/resources/**" ,"/home", "/").permitAll()
+                    .antMatchers("/editPatient/**"
+                    , "/deletePatient/**", "/saveEditedPatient/**"
+                    , "/saveNewPatient/**", "/addNewPatient/**").hasRole("ADMIN")
+                    .antMatchers("/patients/**").hasRole("USER")
+                    .anyRequest().authenticated(); // PROBLEM SOLVED :
+                    // it must be a children under the same  authorizeRequests()
+                    // order matters
+                    // allowing static resources by configure(WebSecurity web)
+                    //.formLogin();
+
+
+
+
+        //http.authorizeRequests().antMatchers("/", "/home").permitAll(); // for all
+
         // toutes les requets nécessite une authentification
-        //http.authorizeHttpRequests().anyRequest().authenticated();
+        //http.authorizeHttpRequests().anyRequest().authenticated(); // PROBLEM : prevent anonymous access home
 
         // hey Spring, je veux utiliser un 'form' d'authetification
         http.formLogin(); //  default login form
@@ -91,6 +100,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }*/
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/img/**");
+    }
 
     @Bean
         // executé au démarrage, et place
