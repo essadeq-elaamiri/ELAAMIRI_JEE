@@ -37,7 +37,7 @@
                         Patients
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                        <li sec:authorize="hasAnyRole('ADMIN')">
+                        <li sec:authorize="hasAuthority('ADMIN')">
                             <a class="dropdown-item" th:href="@{/addNewPatient}">
                             <i class="fas fa-plus"></i>
                                 Add new

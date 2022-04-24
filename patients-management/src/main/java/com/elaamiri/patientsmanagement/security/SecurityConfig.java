@@ -1,5 +1,6 @@
 package com.elaamiri.patientsmanagement.security;
 
+import com.elaamiri.patientsmanagement.security.services.UserDetailsServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,10 +24,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private UserDetailsServiceImp userDetailsService;
 
     @Override // spécifier les droits d'accès
     protected void configure(HttpSecurity http) throws Exception {
-
+        http.authorizeRequests()
+                .antMatchers("/resources/**" ,"/home", "/").permitAll()
+                .antMatchers("/editPatient/**"
+                        , "/deletePatient/**", "/saveEditedPatient/**"
+                        , "/saveNewPatient/**", "/addNewPatient/**").hasAuthority("ADMIN")
+                .antMatchers("/patients/**").hasAuthority("USER")
+                .anyRequest().authenticated();
+        /*
         // droits d'acces
         http.authorizeRequests()
                     .antMatchers("/resources/**" ,"/home", "/").permitAll()
@@ -40,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // allowing static resources by configure(WebSecurity web)
                     //.formLogin();
         //http.authorizeRequests().antMatchers("/", "/home").permitAll(); // for all
-
+        */
         // toutes les requets nécessite une authentification
         //http.authorizeHttpRequests().anyRequest().authenticated(); // PROBLEM : prevent anonymous access home
 
@@ -105,13 +115,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override // Spécifier la stratégie avec laquelle Spring Sec va
     // chercher les utilisateurs authorisés
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        PasswordEncoder passwordEncoder = getPasswordEncoder();
-        auth.userDetailsService(new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return null;
-            }
-        });
+        //PasswordEncoder passwordEncoder = getPasswordEncoder();
+        // userDetailsService injected
+        auth.userDetailsService(userDetailsService);
 
     }
 
@@ -120,14 +126,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/img/**");
     }
 
-    @Bean
-        // executé au démarrage, et place
-        // l'objet retourné dans le context
-        // comme Spring Bean (il peut etre injecté n'import où)
-    PasswordEncoder getPasswordEncoder(){
-        // retourner le type d'encodage
-        // get spring version
-        //System.out.println(SpringVersion.getVersion()); // 5.3.16
-        return  new BCryptPasswordEncoder();
-    }
+
 }

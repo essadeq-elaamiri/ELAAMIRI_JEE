@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface SecurityService {
     AppUser saveNewUser(String username, String password, String passwordConfirmation);
-    AppRole saveNewRole(String roleName, String roleDescription);
-    void addRoleToUser(AppUser appUser, String roleName);
-    void removeRoleOfUser();
+    AppRole saveNewRole(String roleName, String description);
+    void addRoleToUser(String username, String roleName);
+    void removeRoleFromUser(String username, String roleName);
+    void changeUserActiveStatus(String username, boolean newStatus);
+
+    AppUser loadUserByUsername(String username);
+
 }

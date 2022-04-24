@@ -93,7 +93,7 @@
                     <td th:text="${patient.getLastName()}"></td>
                     <td th:text="${patient.getBirthDate()}"></td>
                     <td th:text="${patient.getEmail()}"></td>
-                    <td sec:authorize="hasAnyRole('ADMIN')">
+                    <td sec:authorize="hasAuthority('ADMIN')">
                         <a th:href="@{/editPatient/{id}(id=${patient.getId()},page= ${currentPage}, searchKeyWord=${searchKeyWord})}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
                         <button  class="btn btn-sm btn-danger deletePatientBtn" th:attr="data-deleteLink = ${'/deletePatient/'+patient.getId()+'?page='+currentPage+'&searchKeyWord='+(searchKeyWord == null ? '' : searchKeyWord)}" ><i class="fas fa-trash"></i></button>
                     </td>
