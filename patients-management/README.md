@@ -7,6 +7,7 @@ A basic practical activity, using Java SpringBoot, Spring MVC/ thymeleaf and Spr
 #### [Watch demo on YouTube part 1](https://www.youtube.com/watch?v=9pyiKzWQSbs).
 
 #### [Watch demo on YouTube part 2](https://youtu.be/qACOOJkGmAc).
+#### [Part3,4 report](compteRendu/patients_managment_spring_mvc_data_security_v2.pdf);
 
 1. List all patients
 
