@@ -21,3 +21,7 @@ Usin Spring jpa, Hibernate for the implementation of associations, and inheritan
 ### [Activity 4](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/tree/main/patients-management)
 
 A basic practical activity (Web application to manage patients), using Java Spring 5 (SpringBoot, Spring MVC/ thymeleaf, Spring security and Spring Data JPA) [Repport/doc](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/blob/main/patients-management/compteRendu/patients_management_spring_mvc_data_security.pdf) [video_demo_part1](https://youtu.be/9pyiKzWQSbs) [video_demo_part2](https://youtu.be/qACOOJkGmAc).
+
+### [Activity 4](https://github.com/essadeq-elaamiri/Students-manager-Spring-activity)
+
+A basic practical activity (Web application to manage students), using Java Spring 5 (SpringBoot, Spring MVC/ thymeleaf, Spring security and Spring Data JPA) [video_demo](https://youtu.be/oj51qMF1_So).
