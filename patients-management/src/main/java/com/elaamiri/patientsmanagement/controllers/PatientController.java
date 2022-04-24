@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-//@RestController in cas we're creating API
+//@RestController in case we're creating API
 @AllArgsConstructor
 public class PatientController {
     private final int MAXPAGES_INRANGE = 5;

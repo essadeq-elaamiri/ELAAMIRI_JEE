@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -36,10 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     // order matters
                     // allowing static resources by configure(WebSecurity web)
                     //.formLogin();
-
-
-
-
         //http.authorizeRequests().antMatchers("/", "/home").permitAll(); // for all
 
         // toutes les requets nécessite une authentification
@@ -54,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
-
+/*
     @Override // Spécifier la stratégie avec laquelle Spring Sec va
                 // chercher les utilisateurs authorisés
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -70,13 +69,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .password(passwordEncoder.encode("admin"))
                     .roles("USER","ADMIN");
             //auth.inMemoryAuthentication() ... on peut reutiliser ...
-            /*auth.inMemoryAuthentication()
-                    .withUser("user1")
-                    .password("{noop}1234") // // noop = no encryption needed
-                    .roles("USER");*/
+            //auth.inMemoryAuthentication()
+             //       .withUser("user1")
+               //     .password("{noop}1234") // // noop = no encryption needed
+                 //   .roles("USER");
 
 
     }
+    */
 /*
     @Override // Spécifier la stratégie avec laquelle Spring Sec va
     // chercher les utilisateurs authorisés
@@ -100,6 +100,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }*/
+
+    // L'utilisation de UserDetailsService
+    @Override // Spécifier la stratégie avec laquelle Spring Sec va
+    // chercher les utilisateurs authorisés
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        PasswordEncoder passwordEncoder = getPasswordEncoder();
+        auth.userDetailsService(new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return null;
+            }
+        });
+
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
