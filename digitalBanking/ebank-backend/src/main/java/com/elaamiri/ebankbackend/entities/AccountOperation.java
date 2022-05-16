@@ -21,6 +21,7 @@ public class AccountOperation {
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date date;
     private double amount;
+    @Enumerated(EnumType.STRING)
     private OperationType operationType;
 
     @ManyToOne()

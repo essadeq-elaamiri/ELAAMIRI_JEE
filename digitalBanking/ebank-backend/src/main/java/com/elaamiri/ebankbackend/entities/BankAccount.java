@@ -22,6 +22,7 @@ public class BankAccount {
     @DateTimeFormat(pattern = "YYYY-MM-DD")
     private Date createdAt;
     private double balance;
+    @Enumerated(EnumType.STRING)
     private AccountStatus status;
     private String currency;
 
