@@ -8,9 +8,10 @@
 Il y a deux modèles d'authentification:
 
 - **Statefull**: basé sur les sessions et les coockies, les sessions des utilisateurs sont gérés par le serveur.
+
 - **Stateless**:
 
-| Le server-side rendering (SSR)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | ## Client-Side-Rendering (CSR)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Le server-side rendering (SSR)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Client-Side-Rendering (CSR)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Le server-side scripting exige que le serveur livre des pages HTML préchargées pour chaque demande. Quand un client envoie continuellement d’autres demandes au serveur Web pour envoyer des informations actualisées à l’utilisateur, cela se traduit par une **sollicitation élevée de la capacité du serveur**. Par conséquent, le SSR ne convient pas aux sites Web qui présentent un grand nombre de demandes ou qui nécessitent un grand nombre d’interactions avec les utilisateurs. Pour de tels projets, le **temps de réponse du serveur Web** annulerait l’avantage offert par le chargement de page optimisé. | Le CSR constitue une approche intéressante, en particulier pour les **projets Web présentant beaucoup d’interactions avec les utilisateurs**. Si le processus de chargement initial du site Web est relativement long, le **rendu des pages suivantes en est d’autant plus rapide**. L’expérience utilisateur est beaucoup plus avantageuse qu’avec le server-side rendering, car tous les scripts et les contenus ne doivent pas être chargés d’une seule reprise et entièrement à chaque appel d’une nouvelle page par l’utilisateur. |
 
@@ -59,19 +60,31 @@ Utiliser les entités JPA juste dans la couche `DAO` et la couche `Metier`, et o
 **Details**
 
 On souhaite créer une application Web basée sur Spring et Angular qui permet de gérer des comptes bancaires. Chaque compte appartient à un client il existe deux types de comptes : Courant et Epargnes. chaque Compte peut subir des opérations de types Débit ou crédit.
+
 L'application se compose des couches suivantes :
 
 - Couche DAO (Entités JPA et Repositories)
+
 - Couche Service définissant les opérations suivantes :
-  - Ajouter des comptes
-  - Ajouter des client
-  - Effectuer un débit (Retrait)
-  - Effectuer un crédit (Versement)
-  - Effectuer un virement
-  - Consulter un compte
+
+- Ajouter des comptes
+
+- Ajouter des client
+
+- Effectuer un débit (Retrait)
+
+- Effectuer un crédit (Versement)
+
+- Effectuer un virement
+
+- Consulter un compte
+
 - La couche DTO
+
 - Mappers (DTO <=>Entities)
+
 - La couche Web (Rest Controllers)
+
 - Couche sécurité (Spring Security avec JWT)
 
 Première partie du projet
@@ -79,12 +92,156 @@ Première partie du projet
 Travail à faire :
 
 1. Créer et tester la couche DAO
+
 2. Créer et tester la couche service
+
 3. Créer et tester la couche Web (Rest Controller)
+
 4. Modifier la couche service et la couche web en utilisant les DTO
+
 5. Créer un service d'authentification séparé basé sur Spring Security et JWT
+
 6. Sécuriser l'application Digital Banking en utilisant Spring Security et JWT
+
 7. Créer la partie Frontend Web en utilisant Angular
+
 8. Créer la partie Frontend Mobile avec Flutter
 
-#### Implémentation 01:04:00
+#### Implémentation
+
+_Dépendences_
+
+```xml
+
+<dependencies>
+
+  <dependency>
+
+      <groupId>org.springframework.boot</groupId>
+
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+
+  </dependency>
+
+  <dependency>
+
+      <groupId>org.springframework.boot</groupId>
+
+      <artifactId>spring-boot-starter-web</artifactId>
+
+  </dependency>
+
+  <dependency>
+
+      <groupId>com.h2database</groupId>
+
+      <artifactId>h2</artifactId>
+
+      <scope>runtime</scope>
+
+  </dependency>
+
+  <dependency>
+
+      <groupId>org.projectlombok</groupId>
+
+      <artifactId>lombok</artifactId>
+
+      <optional>true</optional>
+
+  </dependency>
+
+  <dependency>
+
+      <groupId>org.springframework.boot</groupId>
+
+      <artifactId>spring-boot-starter-test</artifactId>
+
+      <scope>test</scope>
+
+  </dependency>
+
+</dependencies>
+
+```
+
+_Structure du projet_
+
+![2](./screenshots/2.JPG)
+
+_Héritage_
+
+Pour gérer l'héritage, on peut utiliser une des trois stratégies:
+
+- _**Single table**_: une seule table va contenir tous les attributs des 3 classes, elle utilise <span  style="color:red;text-decoration:underline">discriminator column</span> pour différencier entre les deux sous types.
+
+Rapide mais, limitée par les valeurs nulles (et les champs non utilisé).
+
+- _**Table per class**_ (la plus utilisée): 2 table, une pour chaque sous type. Rapide par rapport au 'Joined table', mais limitée par la redondance des champs et donc n'est pas plus optimisée au côté mémoire.
+
+Utilisable lorsque on a une grande différence entres les classes (Moins d'attributs communs).
+
+- _**Joined table**_: 3 table, une pour la classe mère, et deux autres pour les sous classes (avec un clé étrangère vers la table base).
+
+> **trick**:
+> Comment choisir ?
+> Commencer par signle Table (Rapide),
+> Vous avez une nombre important des champs nuls (15, 20 ..)?
+> Pensez à Table per class si il y a une grande différence entres les classes (Moins d'attributs communs).
+> Si non, juste un peu de différence, utilisez Joined table.
+
+_bankAccount_
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TYPE", length = 4, discriminatorType = DiscriminatorType.STRING)// string deault
+public class BankAccount {
+    @Id
+    private String id;
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    private Date createdAt;
+    private double balance;
+    private AccountStatus status;
+    private String currency;
+
+    @ManyToOne()
+    private Customer customer;
+
+    @OneToMany(mappedBy = "bankAccount")
+    private List<AccountOperation> accountOperationList;
+
+}
+```
+
+_SavingAccount_
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("SAV")
+public class SavingAccount extends BankAccount {
+    private double interestRate; // taux d'interêt
+}
+
+```
+
+_CurrentAccount_
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("CURR")
+public class CurrentAccount extends BankAccount{
+    private double overDraft;
+}
+```
+
+=> Rest des entitées : [lien]()
