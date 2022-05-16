@@ -358,5 +358,12 @@ Dependence
 application.properties
 
 ```properties
-
+# data base cofig
+spring.datasource.url=jdbc:mysql://localhost:3306/ebank?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=
+# dialect
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MariaDBDialect
+# ddl
+spring.jpa.hibernate.ddl-auto=update
 ```
