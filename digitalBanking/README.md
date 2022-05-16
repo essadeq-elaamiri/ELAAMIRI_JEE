@@ -21,6 +21,10 @@ Il y a deux modèles d'authentification:
 
 ![](https://www.parasoft.com/wp-content/uploads/2021/04/image-2-soap-vs-rest-table.png)
 
+Othrers
+
+![](https://media-exp1.licdn.com/dms/image/C4E22AQEjhsz3E8iBTg/feedshare-shrink_800/0/1652682519331?e=1655337600&v=beta&t=2KCsBImb1Yndh0kMuyBNQx9J5GfJ7ZBHnGHgXS8IpQQ)
+
 ### Angular
 
 [Tutorial by tektutorialshub](https://www.tektutorialshub.com/angular-tutorial/)
@@ -169,6 +173,8 @@ _Structure du projet_
 
 ![2](./screenshots/2.JPG)
 
+#### Partie DAO
+
 _Héritage_
 
 Pour gérer l'héritage, on peut utiliser une des trois stratégies:
@@ -194,6 +200,14 @@ Utilisable lorsque on a une grande différence entres les classes (Moins d'attri
 > Pensez à Table per class si il y a une grande différence entres les classes (Moins d'attributs communs).
 
 > Si non, juste un peu de différence, utilisez Joined table.
+
+Here is a simple flow chart:
+
+```mermaid
+classDiagram
+      BankAccount <|-- SavingAccount
+      BankAccount <|-- CurrentAccount
+```
 
 _bankAccount_
 
@@ -250,3 +264,16 @@ public class CurrentAccount extends BankAccount{
 ```
 
 => Tous les entitées : [lien](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/tree/main/digitalBanking/ebank-backend/src/main/java/com/elaamiri/ebankbackend/entities)
+
+Pour tester, on utilisant la base de données H2:
+
+_application.properties_
+
+```properties
+spring.datasource.url=jdbc:h2:mem:ebank
+spring.h2.console.enabled=true
+server.port=8085
+```
+
+Visitons le console H2 via: `http://localhost:8085/h2-console/`
+![](./screenshots/3.JPG)
