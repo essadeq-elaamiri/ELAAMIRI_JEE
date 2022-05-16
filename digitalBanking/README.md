@@ -184,10 +184,15 @@ Utilisable lorsque on a une grande différence entres les classes (Moins d'attri
 - _**Joined table**_: 3 table, une pour la classe mère, et deux autres pour les sous classes (avec un clé étrangère vers la table base).
 
 > **trick**:
+
 > Comment choisir ?
+
 > Commencer par signle Table (Rapide),
+
 > Vous avez une nombre important des champs nuls (15, 20 ..)?
+
 > Pensez à Table per class si il y a une grande différence entres les classes (Moins d'attributs communs).
+
 > Si non, juste un peu de différence, utilisez Joined table.
 
 _bankAccount_
@@ -244,4 +249,4 @@ public class CurrentAccount extends BankAccount{
 }
 ```
 
-=> Rest des entitées : [lien]()
+=> Tous les entitées : [lien](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/tree/main/digitalBanking/ebank-backend/src/main/java/com/elaamiri/ebankbackend/entities)
