@@ -18,7 +18,8 @@ public interface BankAccountService {
     BankAccount updateAccount(String accountId, BankAccount bankAccount);
 
     List<BankAccount> getBankAccountsList(int page, int size);
-    BankAccount getBankAccountById(long accountId);
+
+    BankAccount getBankAccountById(String accountId);
 
     AccountType getAccountType(String accountId);
 
