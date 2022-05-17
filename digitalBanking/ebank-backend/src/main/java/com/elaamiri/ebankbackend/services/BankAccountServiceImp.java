@@ -33,7 +33,7 @@ public class BankAccountServiceImp implements BankAccountService {
 
     //Logger log = LoggerFactory.getLogger(this.getClass().getName()); // done by lombok
 
-    @Override
+    /*
     public BankAccount saveAccount(double initBalance, AccountType accountType, String customerId) {
         log.info("Saving account ...");
         Customer customer = customerService.getCustomerById(customerId);
@@ -49,10 +49,37 @@ public class BankAccountServiceImp implements BankAccountService {
         bankAccount.setCustomer(customer);
         bankAccount.setCreatedAt(new Date());
         return null;
-    }
+    }*/
 
     @Override
-    public BankAccount saveAccount(BankAccount bankAccount) {
+    public CurrentAccount saveCurrentAccount(double initBalance, double overDraft, String customerId){
+        log.info("Saving currentAccount ...");
+        Customer customer = customerService.getCustomerById(customerId);
+        CurrentAccount bankAccount =  new CurrentAccount();
+        bankAccount.setId(UUID.randomUUID().toString());
+        bankAccount.setBalance(initBalance);  // must be validated
+        bankAccount.setCustomer(customer);
+        bankAccount.setCreatedAt(new Date());
+        bankAccount.setOverDraft(overDraft);
+        return bankAccountRepository.save(bankAccount);
+
+    }
+    @Override
+    public SavingAccount saveSavingAccount(double initBalance, double interestRate, String customerId){
+        log.info("Saving savingAccount ...");
+        Customer customer = customerService.getCustomerById(customerId);
+        SavingAccount bankAccount =  new SavingAccount();
+        bankAccount.setId(UUID.randomUUID().toString());
+        bankAccount.setBalance(initBalance);  // must be validated
+        bankAccount.setCustomer(customer);
+        bankAccount.setCreatedAt(new Date());
+        bankAccount.setInterestRate(interestRate);
+        return bankAccountRepository.save(bankAccount);
+    }
+
+
+    @Override
+    public BankAccount saveAccount(BankAccount bankAccount) throws AccountNotFoundException {
         log.info("Saving account ....");
         if(bankAccount == null) throw new AccountNotFoundException("Invalid account [NULL]");
         bankAccount.setId(UUID.randomUUID().toString());
@@ -60,7 +87,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean deleteAccount(String accountId) {
+    public boolean deleteAccount(String accountId) throws AccountNotFoundException {
         log.info("Deleting account ....");
         BankAccount account =  getBankAccountById(accountId);
         bankAccountRepository.delete(account);
@@ -68,7 +95,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public BankAccount updateAccount(BankAccount bankAccount) {
+    public BankAccount updateAccount(BankAccount bankAccount) throws AccountNotFoundException {
         log.info("Updating account ....");
         BankAccount account =  getBankAccountById(bankAccount.getId());
         return saveAccount(bankAccount);
@@ -80,13 +107,13 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public BankAccount getBankAccountById(String accountId) {
+    public BankAccount getBankAccountById(String accountId) throws AccountNotFoundException {
         log.info("Selecting an account ....");
         return bankAccountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(null));
     }
 
     @Override
-    public AccountType getAccountType(String accountId) {
+    public AccountType getAccountType(String accountId) throws AccountNotFoundException {
         log.info("Getting an account type....");
         BankAccount account = getBankAccountById(accountId);
         if(account instanceof  CurrentAccount) return AccountType.CURRENT_ACCOUNT;
@@ -95,7 +122,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) {
+    public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException {
         log.info("Applying an operation....");
         BankAccount account = getBankAccountById(accountId);
         AccountOperation accountOperation = new AccountOperation();
@@ -118,12 +145,12 @@ public class BankAccountServiceImp implements BankAccountService {
         // save operation
         accountOperationService.saveOperation(accountOperation);
         // add operation to account
-        account.set
+        //account.  TODO: adding 'addOperation to account service'
         return true;
     }
 
     @Override
-    public boolean debitAccount(BankAccount account, double amount, String description) {
+    public boolean debitAccount(BankAccount account, double amount, String description) throws OperationFailedException, AccountNotFoundException {
         log.info("Applying a debit....");
         double balance = account.getBalance();
         if(balance < amount) throw new OperationFailedException("Operation Failed, balance < amount !");
@@ -133,7 +160,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean creditAccount(BankAccount account, double amount, String description) {
+    public boolean creditAccount(BankAccount account, double amount, String description) throws AccountNotFoundException {
         log.info("Applying a credit....");
 
         double balance = account.getBalance();
@@ -143,7 +170,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer) {
+    public boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer) throws AccountNotFoundException, OperationFailedException {
         log.info("Applying a transfer....");
 
         final  String description = "Transfer operation from ".concat(sourceAccount).concat(" To ").concat("destination");

@@ -1,6 +1,6 @@
 package com.elaamiri.ebankbackend.exceptions;
 
-public class CustomerNotFoundException extends RuntimeException{
+public class CustomerNotFoundException extends Exception{
     private String message;
     public CustomerNotFoundException(String message){
         if (message == null) this.message = "Exception: Customer Not Found !";

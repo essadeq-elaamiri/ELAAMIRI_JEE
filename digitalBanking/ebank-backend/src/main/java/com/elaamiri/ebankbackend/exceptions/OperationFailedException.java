@@ -1,6 +1,6 @@
 package com.elaamiri.ebankbackend.exceptions;
 
-public class OperationFailedException extends RuntimeException{
+public class OperationFailedException extends Exception{
     private String message;
     public OperationFailedException(String message){
         if (message == null) this.message = "Exception: Operation Failed !";

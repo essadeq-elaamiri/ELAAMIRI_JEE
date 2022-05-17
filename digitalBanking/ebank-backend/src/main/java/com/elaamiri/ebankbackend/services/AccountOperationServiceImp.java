@@ -19,21 +19,21 @@ import java.util.UUID;
 public class AccountOperationServiceImp implements AccountOperationService {
     AccountOperationRepository operationRepository;
     @Override
-    public AccountOperation saveOperation(AccountOperation accountOperation) {
+    public AccountOperation saveOperation(AccountOperation accountOperation) throws CustomerNotFoundException {
         log.info("Saving operation ....");
         if(accountOperation == null) throw new CustomerNotFoundException("Invalid operation [NULL]");
         return operationRepository.save(accountOperation);
     }
 
     @Override
-    public AccountOperation updateOperation(AccountOperation accountOperation) {
+    public AccountOperation updateOperation(AccountOperation accountOperation) throws OperationFailedException {
         log.info("Updating operation ....");
         AccountOperation operation =  getOperationById(accountOperation.getId());
         return operationRepository.save(accountOperation);
     }
 
     @Override
-    public boolean deleteOperation(long operationId) {
+    public boolean deleteOperation(long operationId) throws OperationFailedException {
         log.info("Deleting operation ....");
         AccountOperation operation =  getOperationById(operationId);
         operationRepository.delete(operation);
@@ -41,7 +41,7 @@ public class AccountOperationServiceImp implements AccountOperationService {
     }
 
     @Override
-    public AccountOperation getOperationById(long id) {
+    public AccountOperation getOperationById(long id) throws OperationFailedException {
         log.info("Selecting an operation ....");
         return operationRepository.findById(id).orElseThrow(() -> new OperationFailedException(null));
 
