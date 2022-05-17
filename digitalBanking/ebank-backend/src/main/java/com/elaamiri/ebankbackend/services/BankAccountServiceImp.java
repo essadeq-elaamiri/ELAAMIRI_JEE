@@ -3,9 +3,7 @@ package com.elaamiri.ebankbackend.services;
 import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountType;
 import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
-import com.elaamiri.ebankbackend.exceptions.AccountNotFoundException;
-import com.elaamiri.ebankbackend.exceptions.CustomerNotFoundException;
-import com.elaamiri.ebankbackend.exceptions.OperationFailedException;
+import com.elaamiri.ebankbackend.exceptions.*;
 import com.elaamiri.ebankbackend.repositories.BankAccountRepository;
 import com.elaamiri.ebankbackend.repositories.CustomerRepository;
 import com.elaamiri.ebankbackend.services.interfaces.AccountOperationService;
@@ -33,26 +31,9 @@ public class BankAccountServiceImp implements BankAccountService {
 
     //Logger log = LoggerFactory.getLogger(this.getClass().getName()); // done by lombok
 
-    /*
-    public BankAccount saveAccount(double initBalance, AccountType accountType, String customerId) {
-        log.info("Saving account ...");
-        Customer customer = customerService.getCustomerById(customerId);
-        BankAccount bankAccount;
-        if(accountType.equals(AccountType.SAVING_ACCOUNT)){
-            bankAccount = new SavingAccount();
-        }
-        else {
-            bankAccount = new CurrentAccount();
-        }
-        bankAccount.setId(UUID.randomUUID().toString());
-        bankAccount.setBalance(initBalance);  // must be validated
-        bankAccount.setCustomer(customer);
-        bankAccount.setCreatedAt(new Date());
-        return null;
-    }*/
 
     @Override
-    public CurrentAccount saveCurrentAccount(double initBalance, double overDraft, String customerId){
+    public CurrentAccount saveCurrentAccount(double initBalance, double overDraft, String customerId) throws CustomerNotFoundException {
         log.info("Saving currentAccount ...");
         Customer customer = customerService.getCustomerById(customerId);
         CurrentAccount bankAccount =  new CurrentAccount();
@@ -65,7 +46,7 @@ public class BankAccountServiceImp implements BankAccountService {
 
     }
     @Override
-    public SavingAccount saveSavingAccount(double initBalance, double interestRate, String customerId){
+    public SavingAccount saveSavingAccount(double initBalance, double interestRate, String customerId) throws CustomerNotFoundException {
         log.info("Saving savingAccount ...");
         Customer customer = customerService.getCustomerById(customerId);
         SavingAccount bankAccount =  new SavingAccount();
@@ -98,7 +79,7 @@ public class BankAccountServiceImp implements BankAccountService {
     public BankAccount updateAccount(BankAccount bankAccount) throws AccountNotFoundException {
         log.info("Updating account ....");
         BankAccount account =  getBankAccountById(bankAccount.getId());
-        return saveAccount(bankAccount);
+        return bankAccountRepository.save(account);
     }
 
     @Override
@@ -122,58 +103,77 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException {
+    public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException, CustomerNotFoundException, BalanceNotSufficientException {
         log.info("Applying an operation....");
         BankAccount account = getBankAccountById(accountId);
-        AccountOperation accountOperation = new AccountOperation();
 
         if(amount <= 0) throw  new OperationFailedException("Operation Failed, amount <= 0 !");
         // pass operation
         if(operationType.equals(OperationType.CREDIT)){
-            accountOperation.setOperationType(OperationType.CREDIT);
             creditAccount(account, amount, description);
         }
         else if (operationType.equals(OperationType.DEBIT)) {
-            accountOperation.setOperationType(OperationType.DEBIT);
             debitAccount(account, amount, description);
         }
+        return true;
+    }
 
+    @Override
+    public boolean debitAccount(BankAccount account, double amount, String description) throws BalanceNotSufficientException, AccountNotFoundException, CustomerNotFoundException {
+        log.info("Applying a debit....");
+        double balance = account.getBalance();
+        if(balance < amount) throw new BalanceNotSufficientException("Operation Failed, balance < amount !");
+
+        // create the operation
+        AccountOperation accountOperation = new AccountOperation();
+        accountOperation.setOperationType(OperationType.DEBIT);
         accountOperation.setBankAccount(account);
         accountOperation.setDate(new Date());
         accountOperation.setAmount(amount);
         accountOperation.setDescription(description);
+        accountOperation.setBankAccount(account);
+
         // save operation
         accountOperationService.saveOperation(accountOperation);
-        // add operation to account
-        //account.  TODO: adding 'addOperation to account service'
-        return true;
-    }
+        // update account data
 
-    @Override
-    public boolean debitAccount(BankAccount account, double amount, String description) throws OperationFailedException, AccountNotFoundException {
-        log.info("Applying a debit....");
-        double balance = account.getBalance();
-        if(balance < amount) throw new OperationFailedException("Operation Failed, balance < amount !");
         account.setBalance(balance - amount);
         updateAccount(account);
+
         return true;
     }
 
     @Override
-    public boolean creditAccount(BankAccount account, double amount, String description) throws AccountNotFoundException {
+    public boolean creditAccount(BankAccount account, double amount, String description) throws AccountNotFoundException, CustomerNotFoundException {
         log.info("Applying a credit....");
 
         double balance = account.getBalance();
+        // create the operation
+        AccountOperation accountOperation = new AccountOperation();
+        accountOperation.setOperationType(OperationType.CREDIT);
+        accountOperation.setBankAccount(account);
+        accountOperation.setDate(new Date());
+        accountOperation.setAmount(amount);
+        accountOperation.setDescription(description);
+        accountOperation.setBankAccount(account);
+        // save operation
+        accountOperationService.saveOperation(accountOperation);
+        // update account data
+
         account.setBalance(balance + amount);
+        //account.getAccountOperationList().add(accountOperation);
         updateAccount(account);
+
+
         return true;
     }
 
     @Override
-    public boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer) throws AccountNotFoundException, OperationFailedException {
+    public boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer) throws AccountNotFoundException, OperationFailedException, CustomerNotFoundException, BalanceNotSufficientException, TransferToTheSameAccountException {
         log.info("Applying a transfer....");
 
         final  String description = "Transfer operation from ".concat(sourceAccount).concat(" To ").concat("destination");
+        if(sourceAccount.equals(destinationAccount)) throw new TransferToTheSameAccountException("Operation failed, trying to transfer from and to the same account !");
         // Making sure that the two are there (Before any operation)
         getBankAccountById(sourceAccount);
         getBankAccountById(destinationAccount);

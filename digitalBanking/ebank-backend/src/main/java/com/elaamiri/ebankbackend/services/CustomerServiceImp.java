@@ -22,7 +22,7 @@ public class CustomerServiceImp implements CustomerService {
     CustomerRepository customerRepository;
 
     @Override
-    public Customer saveCustomer(Customer customer) {
+    public Customer saveCustomer(Customer customer) throws CustomerNotFoundException {
         log.info("Saving customer ....");
         if(customer == null) throw new CustomerNotFoundException("Invalid customer [NULL]");
         customer.setId(UUID.randomUUID().toString());
@@ -30,14 +30,14 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
+    public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
         log.info("Updating customer ....");
         Customer customer1 =  getCustomerById(customer.getId());
         return customerRepository.save(customer);
     }
 
     @Override
-    public boolean deleteCustomer(String customerId) {
+    public boolean deleteCustomer(String customerId) throws CustomerNotFoundException {
         log.info("Deleting customer ....");
         Customer customer =  getCustomerById(customerId);
         customerRepository.delete(customer);
@@ -45,7 +45,7 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(String id) {
+    public Customer getCustomerById(String id) throws CustomerNotFoundException {
         log.info("Selecting a customer ....");
         return customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(null));
     }

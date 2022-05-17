@@ -1,14 +1,13 @@
 package com.elaamiri.ebankbackend;
 
-import com.elaamiri.ebankbackend.entities.AccountOperation;
-import com.elaamiri.ebankbackend.entities.CurrentAccount;
-import com.elaamiri.ebankbackend.entities.Customer;
-import com.elaamiri.ebankbackend.entities.SavingAccount;
+import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountStatus;
 import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
 import com.elaamiri.ebankbackend.repositories.AccountOperationRepository;
 import com.elaamiri.ebankbackend.repositories.BankAccountRepository;
 import com.elaamiri.ebankbackend.repositories.CustomerRepository;
+import com.elaamiri.ebankbackend.services.interfaces.BankAccountService;
+import com.elaamiri.ebankbackend.services.interfaces.CustomerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,8 +24,8 @@ public class EbankBackendApplication {
         SpringApplication.run(EbankBackendApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(CustomerRepository customerRepository,
+    //@Bean
+    CommandLineRunner TestingDAO(CustomerRepository customerRepository,
                           BankAccountRepository bankAccountRepository,
                           AccountOperationRepository accountOperationRepository){
         return (args)->{
@@ -76,5 +75,39 @@ public class EbankBackendApplication {
                 }
             });
         };
+
     }
+
+    @Bean
+    CommandLineRunner TestingService(CustomerService customerService, BankAccountService bankAccountService){
+        return (args)->{
+            // creating an customer
+            Customer customer = new Customer();
+            customer.setName("Hajji Ilham");
+            customer.setEmail("email@emal.cm");
+            customer = customerService.saveCustomer(customer);
+
+            // update customer
+            customer.setName("Hajji Ilham idrissi");
+            customer = customerService.updateCustomer(customer);
+
+
+            // creating an account
+            BankAccount b1 = bankAccountService.saveCurrentAccount(79000,310, customer.getId());
+            BankAccount b2 =  bankAccountService.saveSavingAccount(79000,3.10, customer.getId());
+
+            // operations
+            bankAccountService.applyOperation(b1.getId(),12990, OperationType.DEBIT, "Debit");
+            bankAccountService.applyOperation(b1.getId(),1000, OperationType.CREDIT, "Credit");
+            //bankAccountService.applyOperation(b1.getId(),-1000, OperationType.CREDIT, "Credit");
+
+            bankAccountService.transfer(b1.getId(), b2.getId(), 23990);
+
+
+
+
+        };
+
+    }
+
 }
