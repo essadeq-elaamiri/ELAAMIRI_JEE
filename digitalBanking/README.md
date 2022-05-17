@@ -369,3 +369,5 @@ spring.jpa.hibernate.ddl-auto=update
 ```
 
 #### Couche Service
+
+Décrire les diférentes fonctionnalités de l'application.

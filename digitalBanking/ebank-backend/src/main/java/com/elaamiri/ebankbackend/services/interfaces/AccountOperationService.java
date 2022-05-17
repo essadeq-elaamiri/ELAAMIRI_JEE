@@ -9,7 +9,7 @@ import java.util.List;
 public interface AccountOperationService {
     // save, update, delete, getOne, getList
     AccountOperation saveOperation(AccountOperation accountOperation);
-    AccountOperation updateOperation(long operationId, AccountOperation accountOperation);
+    AccountOperation updateOperation(AccountOperation accountOperation);
     boolean deleteOperation(long operationId);
 
     AccountOperation getOperationById(long id);

@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerService {
     // save, update, delete, getOne, getList
     Customer saveCustomer(Customer customer);
-    Customer updateCustomer(String customerId);
+    Customer updateCustomer(Customer customer);
     boolean deleteCustomer(String customerId);
 
     Customer getCustomerById(String id);

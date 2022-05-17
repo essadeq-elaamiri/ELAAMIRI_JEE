@@ -30,9 +30,9 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public Customer updateCustomer(String customerId) {
+    public Customer updateCustomer(Customer customer) {
         log.info("Updating customer ....");
-        Customer customer =  getCustomerById(customerId);
+        Customer customer1 =  getCustomerById(customer.getId());
         return customerRepository.save(customer);
     }
 

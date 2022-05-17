@@ -15,7 +15,7 @@ public interface BankAccountService {
     BankAccount saveAccount(double initBalance, AccountType accountType, String customerId);
     BankAccount saveAccount(BankAccount bankAccount);
     boolean deleteAccount(String accountId);
-    BankAccount updateAccount(String accountId, BankAccount bankAccount);
+    BankAccount updateAccount(BankAccount bankAccount);
 
     List<BankAccount> getBankAccountsList(int page, int size);
 
@@ -25,8 +25,8 @@ public interface BankAccountService {
 
     boolean applyOperation(String accountId, double amount, OperationType operationType, String description);
 
-    boolean debitAccount(String accountId, double amount, String description);
-    boolean creditAccount(String accountId, double amount, String description);// retrait
-    boolean transfer(String sourceAccount, String destinationAccount, boolean amountToTransfer);
+    boolean debitAccount(BankAccount account, double amount, String description);
+    boolean creditAccount(BankAccount account, double amount, String description);// retrait
+    boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer);
 
 }
