@@ -173,7 +173,7 @@ _Structure du projet_
 
 ![2](./screenshots/2.JPG)
 
-#### Partie DAO
+#### Couche DAO
 
 _Héritage_
 
@@ -367,3 +367,5 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MariaDBDialect
 # ddl
 spring.jpa.hibernate.ddl-auto=update
 ```
+
+#### Couche Service
