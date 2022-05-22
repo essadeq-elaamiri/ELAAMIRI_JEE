@@ -1057,4 +1057,8 @@ Postman ensuite, créera une collection, pour tester l'API, il va detecter tout 
 
 ![14](./screenshots/14.JPG)
 
-03:21:00
+v3
+TODO: Backend
+
+- [ ] Backend operation
+- [ ] Rest update & delete things
