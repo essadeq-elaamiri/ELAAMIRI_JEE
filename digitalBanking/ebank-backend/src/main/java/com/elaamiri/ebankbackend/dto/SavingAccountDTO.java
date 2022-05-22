@@ -13,14 +13,9 @@ import java.util.List;
 
 @Data
 
-public class SavingAccountDTO {
+public class SavingAccountDTO  extends BankAccountDTO{
 
-    private String id;
-    private Date createdAt;
-    private double balance;
-    private AccountStatus status;
-    private String currency;
-    private CustomerDTO customer;
+
     private double interestRate; // taux d'interêt
 
 

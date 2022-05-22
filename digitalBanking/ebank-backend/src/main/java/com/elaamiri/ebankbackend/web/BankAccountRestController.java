@@ -1,5 +1,6 @@
 package com.elaamiri.ebankbackend.web;
 
+import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
 import com.elaamiri.ebankbackend.dto.currentAccountDTO;
 import com.elaamiri.ebankbackend.services.interfaces.BankAccountService;
 import lombok.AllArgsConstructor;
@@ -16,8 +17,8 @@ public class BankAccountRestController {
 
     // get all accounts
     @GetMapping("/accounts")
-    public List<currentAccountDTO> getAllAccounts(@RequestParam int page, @RequestParam int size){
-        return bankAccountService.getBankAccountsList(page, size);
+    public List<CurrentAccountDTO> getAllCurrentAccounts(@RequestParam int page, @RequestParam int size){
+        return bankAccountService.get
     }
 
 }

@@ -5,12 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CurrentAccountDTO {
-    private String id;
-    private Date createdAt;
-    private AccountStatus status;
-    private String currency;
-    private CustomerDTO customerDTO;
+public class CurrentAccountDTO extends BankAccountDTO {
+
     private double overDraft;
 
 

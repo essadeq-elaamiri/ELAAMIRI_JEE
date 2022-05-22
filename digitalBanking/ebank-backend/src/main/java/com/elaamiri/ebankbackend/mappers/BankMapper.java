@@ -1,8 +1,10 @@
 package com.elaamiri.ebankbackend.mappers;
 
+import com.elaamiri.ebankbackend.dto.BankAccountDTO;
 import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
 import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.dto.SavingAccountDTO;
+import com.elaamiri.ebankbackend.entities.BankAccount;
 import com.elaamiri.ebankbackend.entities.CurrentAccount;
 import com.elaamiri.ebankbackend.entities.Customer;
 import com.elaamiri.ebankbackend.entities.SavingAccount;
@@ -21,5 +23,8 @@ public interface BankMapper {
 
     SavingAccountDTO dtoFromSavingAccount(SavingAccount savingAccount);
     SavingAccount savingAccountFromDTO(SavingAccountDTO savingAccountDTO);
+
+    BankAccountDTO dtoFromSavingAccount(BankAccount bankAccount);
+    BankAccount savingAccountFromDTO(BankAccountDTO bankAccountDTO);
 
 }
