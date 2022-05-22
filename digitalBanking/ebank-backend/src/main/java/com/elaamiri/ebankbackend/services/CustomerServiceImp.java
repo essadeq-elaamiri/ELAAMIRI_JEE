@@ -30,10 +30,6 @@ public class CustomerServiceImp implements CustomerService {
     public CustomerDTO saveCustomer(CustomerDTO customerDTo) throws CustomerNotFoundException {
         log.info("Saving customer ....");
         if(customerDTo == null) throw new CustomerNotFoundException("Invalid customer [NULL]");
-        log.warn("from service saving ... "+(customerDTo.getId().isEmpty()? "empty": customerDTo.getId()));
-        if(customerDTo.getId() != null){
-            return updateCustomer(customerDTo);
-        }
         customerDTo.setId(UUID.randomUUID().toString());
         return  bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTo)));
     }
@@ -41,8 +37,8 @@ public class CustomerServiceImp implements CustomerService {
     @Override
     public CustomerDTO updateCustomer(CustomerDTO customerDTO) throws CustomerNotFoundException {
         log.info("Updating customer ....");
-        CustomerDTO customerDTO2 =  getCustomerById(customerDTO.getId());
-        return bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTO2)));
+        getCustomerById(customerDTO.getId());
+        return bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTO)));
     }
 
     @Override

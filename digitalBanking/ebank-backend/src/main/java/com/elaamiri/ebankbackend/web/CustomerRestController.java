@@ -34,8 +34,21 @@ public class CustomerRestController {
     // saving a customer
     @PostMapping("/customers")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerNotFoundException {
-        log.warn(customerDTO.getId());
+        log.warn(customerDTO.getName());
         return customerService.saveCustomer(customerDTO);
+    }
+    // updating a record
+    @PutMapping("/customers/{id}")
+    public CustomerDTO updateCustomer(@PathVariable String id, @RequestBody CustomerDTO customerDTO) throws CustomerNotFoundException {
+        customerDTO.setId(id);
+        // TODO: correct error return the same customer without editings
+        return customerService.saveCustomer(customerDTO);
+    }
+
+    // delete a customer
+    @DeleteMapping("/customers/{id}")
+    public void deleteCustomer(@PathVariable String id) throws CustomerNotFoundException {
+        customerService.deleteCustomer(id);
     }
 
 }

@@ -281,6 +281,8 @@ Visitons le console H2 via: `http://localhost:8085/h2-console/`
 
 Testons nos repositories:
 
+<details>
+
 ```java
 @Bean
     CommandLineRunner run(CustomerRepository customerRepository,
@@ -336,6 +338,7 @@ Testons nos repositories:
     }
 ```
 
+</details>
 Resultats:
 
 ![](./screenshots/4.JPG)
@@ -407,6 +410,9 @@ public interface BankAccountService {
 ```
 
 `BankAccountServiceImp.java`
+
+<details>
+<legend>BankAccountServiceImp</legend>
 
 ```java
 @Service
@@ -574,6 +580,8 @@ public class BankAccountServiceImp implements BankAccountService {
 }
 
 ```
+
+</details>
 
 **Tests Service layer**
 
@@ -750,4 +758,64 @@ Noter:
 ![11](./screenshots/11.JPG)
 
 **Controlleur (exemple CustomerRestController)**
-2:04
+
+<details>
+<legend>CustomerRestController</legend>
+
+```java
+@Service
+@Transactional
+@AllArgsConstructor
+@Slf4j // get log attribute
+
+public class CustomerServiceImp implements CustomerService {
+    CustomerRepository customerRepository;
+    BankMapper bankMapper;
+
+    @Override
+    public CustomerDTO saveCustomer(CustomerDTO customerDTo) throws CustomerNotFoundException {
+        log.info("Saving customer ....");
+        if(customerDTo == null) throw new CustomerNotFoundException("Invalid customer [NULL]");
+        customerDTo.setId(UUID.randomUUID().toString());
+        return  bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTo)));
+    }
+
+    @Override
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO) throws CustomerNotFoundException {
+        log.info("Updating customer ....");
+        getCustomerById(customerDTO.getId());
+        return bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTO)));
+    }
+
+    @Override
+    public boolean deleteCustomer(String customerId) throws CustomerNotFoundException {
+        log.info("Deleting customer ....");
+        CustomerDTO customerDTO =  getCustomerById(customerId);
+        customerRepository.delete(bankMapper.customerFromDTO(customerDTO));
+        return true;
+    }
+
+    @Override
+    public CustomerDTO getCustomerById(String id) throws CustomerNotFoundException {
+        log.info("Selecting a customer ....");
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(null));
+        return bankMapper.dtoFromCustomer(customer);
+    }
+
+    @Override
+    public List<CustomerDTO> getCustomersList(int page, int size, String keyword) {
+        log.info("Selecting  customers ....");
+        List<Customer> customersList = new ArrayList<>();
+        // mapping
+        if(keyword != null) customersList =  customerRepository.findCustomersByNameContains(keyword, PageRequest.of(page, size)).getContent();
+        else customersList =  customerRepository.findAll( PageRequest.of(page, size)).getContent();
+
+        return customersList.stream().map(customer -> {
+            return bankMapper.dtoFromCustomer(customer);
+        }).collect(Collectors.toList());
+    }
+}
+
+```
+
+</details>
