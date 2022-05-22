@@ -86,9 +86,9 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public BankAccountDTO updateAccount(String accountId, BankAccountDTO bankAccountDTO) throws AccountNotFoundException {
+    public BankAccountDTO updateAccount(BankAccountDTO bankAccountDTO) throws AccountNotFoundException {
         log.info("Updating account ....");
-        BankAccountDTO accountDTO =  getBankAccountById(bankAccountDTO.getId());
+        getBankAccountById(bankAccountDTO.getId());
         return bankMapper.dtoFromBankAccount(bankAccountRepository.save(bankMapper.bankAccountFromDTO(bankAccountDTO)));
     }
 
@@ -136,16 +136,15 @@ public class BankAccountServiceImp implements BankAccountService {
         if(balance < amount) throw new BalanceNotSufficientException("Operation Failed, balance < amount !");
 
         // create the operation
-        AccountOperation accountOperation = new AccountOperation();
-        accountOperation.setOperationType(OperationType.DEBIT);
-        accountOperation.setBankAccount(account);
-        accountOperation.setDate(new Date());
-        accountOperation.setAmount(amount);
-        accountOperation.setDescription(description);
-        accountOperation.setBankAccount(account);
+        AccountOperationDTO accountOperationDTO = new AccountOperationDTO();
+        accountOperationDTO.setOperationType(OperationType.DEBIT);
+        accountOperationDTO.setBankAccountDTO(account);
+        accountOperationDTO.setDate(new Date());
+        accountOperationDTO.setAmount(amount);
+        accountOperationDTO.setDescription(description);
 
         // save operation
-        accountOperationService.saveOperation(accountOperation);
+        accountOperationService.saveOperation(bankMapper.dtoFromAccountOperation(bankMapper.accountOperationFromDTO(accountOperationDTO)));
         // update account data
 
         account.setBalance(balance - amount);
@@ -155,20 +154,19 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean creditAccount(BankAccount account, double amount, String description) throws AccountNotFoundException, CustomerNotFoundException {
+    public boolean creditAccount(BankAccountDTO account, double amount, String description) throws AccountNotFoundException, CustomerNotFoundException {
         log.info("Applying a credit....");
 
         double balance = account.getBalance();
         // create the operation
-        AccountOperation accountOperation = new AccountOperation();
-        accountOperation.setOperationType(OperationType.CREDIT);
-        accountOperation.setBankAccount(account);
-        accountOperation.setDate(new Date());
-        accountOperation.setAmount(amount);
-        accountOperation.setDescription(description);
-        accountOperation.setBankAccount(account);
+        AccountOperationDTO accountOperationDTO = new AccountOperationDTO();
+        accountOperationDTO.setOperationType(OperationType.CREDIT);
+        accountOperationDTO.setBankAccountDTO(account);
+        accountOperationDTO.setDate(new Date());
+        accountOperationDTO.setAmount(amount);
+        accountOperationDTO.setDescription(description);
         // save operation
-        accountOperationService.saveOperation(accountOperation);
+        accountOperationService.saveOperation(accountOperationDTO);
         // update account data
 
         account.setBalance(balance + amount);

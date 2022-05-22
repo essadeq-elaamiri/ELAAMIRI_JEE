@@ -22,7 +22,7 @@ public interface BankAccountService {
     SavingAccountDTO saveSavingAccount(double initBalance, double interestRate, String customerId) throws CustomerNotFoundException;
     BankAccountDTO saveAccount(BankAccountDTO bankAccount) throws AccountNotFoundException, CustomerNotFoundException;
     boolean deleteAccount(String accountId) throws AccountNotFoundException;
-    BankAccountDTO updateAccount(String id, BankAccountDTO bankAccount) throws AccountNotFoundException;
+    BankAccountDTO updateAccount(BankAccountDTO bankAccount) throws AccountNotFoundException;
 
     List<BankAccountDTO> getBankAccountsList(int page, int size);
 
