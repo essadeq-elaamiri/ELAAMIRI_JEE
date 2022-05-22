@@ -4,6 +4,7 @@ import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.Customer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BankMapperImp implements BankMapper{

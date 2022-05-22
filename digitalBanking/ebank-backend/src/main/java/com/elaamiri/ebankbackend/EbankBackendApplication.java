@@ -1,5 +1,6 @@
 package com.elaamiri.ebankbackend;
 
+import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountStatus;
 import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
@@ -78,14 +79,19 @@ public class EbankBackendApplication {
 
     }
 
-    @Bean
+    //@Bean
     CommandLineRunner TestingService(CustomerService customerService, BankAccountService bankAccountService){
         return (args)->{
             // creating an customer
-            Customer customer = new Customer();
+            CustomerDTO customer = new CustomerDTO();
             customer.setName("Hajji Ilham");
             customer.setEmail("email@emal.cm");
             customer = customerService.saveCustomer(customer);
+
+            CustomerDTO customer2 = new CustomerDTO();
+            customer2.setName("Itasouni Ilham");
+            customer2.setEmail("email@emal.cm");
+             customerService.saveCustomer(customer2);
 
             // update customer
             customer.setName("Hajji Ilham idrissi");

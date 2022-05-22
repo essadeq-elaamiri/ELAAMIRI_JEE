@@ -1,9 +1,11 @@
 package com.elaamiri.ebankbackend.services;
 
+import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountType;
 import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
 import com.elaamiri.ebankbackend.exceptions.*;
+import com.elaamiri.ebankbackend.mappers.BankMapper;
 import com.elaamiri.ebankbackend.repositories.BankAccountRepository;
 import com.elaamiri.ebankbackend.repositories.CustomerRepository;
 import com.elaamiri.ebankbackend.services.interfaces.AccountOperationService;
@@ -28,6 +30,7 @@ public class BankAccountServiceImp implements BankAccountService {
     BankAccountRepository bankAccountRepository;
     CustomerService customerService;
     AccountOperationService accountOperationService;
+    BankMapper bankMapper;
 
     //Logger log = LoggerFactory.getLogger(this.getClass().getName()); // done by lombok
 
@@ -35,11 +38,11 @@ public class BankAccountServiceImp implements BankAccountService {
     @Override
     public CurrentAccount saveCurrentAccount(double initBalance, double overDraft, String customerId) throws CustomerNotFoundException {
         log.info("Saving currentAccount ...");
-        Customer customer = customerService.getCustomerById(customerId);
+        CustomerDTO customerDTO = customerService.getCustomerById(customerId);
         CurrentAccount bankAccount =  new CurrentAccount();
         bankAccount.setId(UUID.randomUUID().toString());
         bankAccount.setBalance(initBalance);  // must be validated
-        bankAccount.setCustomer(customer);
+        bankAccount.setCustomer(bankMapper.customerFromDTO(customerDTO));
         bankAccount.setCreatedAt(new Date());
         bankAccount.setOverDraft(overDraft);
         return bankAccountRepository.save(bankAccount);
@@ -48,11 +51,11 @@ public class BankAccountServiceImp implements BankAccountService {
     @Override
     public SavingAccount saveSavingAccount(double initBalance, double interestRate, String customerId) throws CustomerNotFoundException {
         log.info("Saving savingAccount ...");
-        Customer customer = customerService.getCustomerById(customerId);
+        CustomerDTO customerDTO = customerService.getCustomerById(customerId);
         SavingAccount bankAccount =  new SavingAccount();
         bankAccount.setId(UUID.randomUUID().toString());
         bankAccount.setBalance(initBalance);  // must be validated
-        bankAccount.setCustomer(customer);
+        bankAccount.setCustomer(bankMapper.customerFromDTO(customerDTO));
         bankAccount.setCreatedAt(new Date());
         bankAccount.setInterestRate(interestRate);
         return bankAccountRepository.save(bankAccount);

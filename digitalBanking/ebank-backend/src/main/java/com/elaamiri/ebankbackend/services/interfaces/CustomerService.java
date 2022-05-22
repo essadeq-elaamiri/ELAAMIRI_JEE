@@ -10,11 +10,11 @@ import java.util.List;
 
 public interface CustomerService {
     // save, update, delete, getOne, getList
-    Customer saveCustomer(Customer customer) throws CustomerNotFoundException;
-    Customer updateCustomer(Customer customer) throws CustomerNotFoundException;
+    CustomerDTO saveCustomer(CustomerDTO customerDTO) throws CustomerNotFoundException;
+    CustomerDTO updateCustomer(CustomerDTO customerDTO) throws CustomerNotFoundException;
     boolean deleteCustomer(String customerId) throws CustomerNotFoundException;
 
-    Customer getCustomerById(String id) throws CustomerNotFoundException;
+    CustomerDTO getCustomerById(String id) throws CustomerNotFoundException;
     List<CustomerDTO> getCustomersList(int page, int size, String keyword);
 
 }

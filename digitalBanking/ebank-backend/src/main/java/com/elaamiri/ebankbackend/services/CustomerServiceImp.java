@@ -27,32 +27,37 @@ public class CustomerServiceImp implements CustomerService {
     BankMapper bankMapper;
 
     @Override
-    public Customer saveCustomer(Customer customer) throws CustomerNotFoundException {
+    public CustomerDTO saveCustomer(CustomerDTO customerDTo) throws CustomerNotFoundException {
         log.info("Saving customer ....");
-        if(customer == null) throw new CustomerNotFoundException("Invalid customer [NULL]");
-        customer.setId(UUID.randomUUID().toString());
-        return customerRepository.save(customer);
+        if(customerDTo == null) throw new CustomerNotFoundException("Invalid customer [NULL]");
+        log.warn("from service saving ... "+(customerDTo.getId().isEmpty()? "empty": customerDTo.getId()));
+        if(customerDTo.getId() != null){
+            return updateCustomer(customerDTo);
+        }
+        customerDTo.setId(UUID.randomUUID().toString());
+        return  bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTo)));
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) throws CustomerNotFoundException {
+    public CustomerDTO updateCustomer(CustomerDTO customerDTO) throws CustomerNotFoundException {
         log.info("Updating customer ....");
-        Customer customer1 =  getCustomerById(customer.getId());
-        return customerRepository.save(customer);
+        CustomerDTO customerDTO2 =  getCustomerById(customerDTO.getId());
+        return bankMapper.dtoFromCustomer(customerRepository.save(bankMapper.customerFromDTO(customerDTO2)));
     }
 
     @Override
     public boolean deleteCustomer(String customerId) throws CustomerNotFoundException {
         log.info("Deleting customer ....");
-        Customer customer =  getCustomerById(customerId);
-        customerRepository.delete(customer);
+        CustomerDTO customerDTO =  getCustomerById(customerId);
+        customerRepository.delete(bankMapper.customerFromDTO(customerDTO));
         return true;
     }
 
     @Override
-    public Customer getCustomerById(String id) throws CustomerNotFoundException {
+    public CustomerDTO getCustomerById(String id) throws CustomerNotFoundException {
         log.info("Selecting a customer ....");
-        return customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(null));
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException(null));
+        return bankMapper.dtoFromCustomer(customer);
     }
 
     @Override

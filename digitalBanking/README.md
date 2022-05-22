@@ -745,4 +745,9 @@ On utilise le mapper dans la couche service:
     }
 ```
 
-1:45
+Noter:
+
+![11](./screenshots/11.JPG)
+
+**Controlleur (exemple CustomerRestController)**
+2:04
