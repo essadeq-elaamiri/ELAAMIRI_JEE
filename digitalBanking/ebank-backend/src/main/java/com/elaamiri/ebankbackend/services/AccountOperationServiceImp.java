@@ -84,6 +84,7 @@ public class AccountOperationServiceImp implements AccountOperationService {
         accountHistoryDTO.setTotalPages(accountOperationPage.getTotalPages());
         accountHistoryDTO.setPageSize(accountOperationPage.getSize());
         accountHistoryDTO.setCurrentPage(page);
+        accountHistoryDTO.setAccountOperationDTOList(accountOperationDTOList);
 
         return  accountHistoryDTO;
     }
