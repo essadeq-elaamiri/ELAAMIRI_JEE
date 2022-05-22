@@ -94,7 +94,7 @@ public class BankMapperImp implements BankMapper{
     public AccountOperationDTO dtoFromAccountOperation(AccountOperation accountOperation){
         AccountOperationDTO accountOperationDTO = new AccountOperationDTO();
         BeanUtils.copyProperties(accountOperation, accountOperationDTO);
-        accountOperationDTO.setBankAccountDTO(dtoFromBankAccount(accountOperation.getBankAccount()));
+        //accountOperationDTO.setBankAccountDTO(dtoFromBankAccount(accountOperation.getBankAccount()));
         return accountOperationDTO;
     }
     @Override

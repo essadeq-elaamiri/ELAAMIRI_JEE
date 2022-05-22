@@ -1,9 +1,11 @@
 package com.elaamiri.ebankbackend.services.interfaces;
 
+import com.elaamiri.ebankbackend.dto.AccountHistoryDTO;
 import com.elaamiri.ebankbackend.dto.AccountOperationDTO;
+import com.elaamiri.ebankbackend.dto.BankAccountDTO;
 import com.elaamiri.ebankbackend.entities.AccountOperation;
-import com.elaamiri.ebankbackend.exceptions.CustomerNotFoundException;
-import com.elaamiri.ebankbackend.exceptions.OperationFailedException;
+import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
+import com.elaamiri.ebankbackend.exceptions.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,4 +23,17 @@ public interface AccountOperationService {
 
     AccountOperationDTO getOperationById(long id) throws OperationFailedException;
 
+    List<AccountOperationDTO> getAllOperations(int page, int size) throws AccountNotFoundException;
+
+    List<AccountOperationDTO> getAccountOperations(String accountId, int page, int size) throws AccountNotFoundException;
+
+    AccountHistoryDTO getAccountHistory(String accountId, int page, int size) throws AccountNotFoundException;
+
+    boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException, CustomerNotFoundException, BalanceNotSufficientException;
+
+    boolean debitAccount(BankAccountDTO account, double amount, String description) throws BalanceNotSufficientException, AccountNotFoundException, CustomerNotFoundException;
+
+    boolean creditAccount(BankAccountDTO account, double amount, String description) throws AccountNotFoundException, CustomerNotFoundException;
+
+    boolean transfer(String sourceAccount, String destinationAccount, double amountToTransfer) throws AccountNotFoundException, OperationFailedException, CustomerNotFoundException, BalanceNotSufficientException, TransferToTheSameAccountException;
 }

@@ -1056,3 +1056,5 @@ On peut tester notre web service avec Postman:
 Postman ensuite, créera une collection, pour tester l'API, il va detecter tout seul les requêtes à éxecuter.
 
 ![14](./screenshots/14.JPG)
+
+03:21:00

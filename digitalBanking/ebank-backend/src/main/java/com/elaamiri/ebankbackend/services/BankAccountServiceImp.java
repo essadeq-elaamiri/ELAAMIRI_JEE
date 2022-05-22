@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class BankAccountServiceImp implements BankAccountService {
     BankAccountRepository bankAccountRepository;
     CustomerService customerService;
-    AccountOperationService accountOperationService;
+    //AccountOperationService accountOperationService;
     BankMapper bankMapper;
 
     //Logger log = LoggerFactory.getLogger(this.getClass().getName()); // done by lombok
@@ -113,6 +113,9 @@ public class BankAccountServiceImp implements BankAccountService {
         return null;
     }
 
+
+
+/*
     @Override
     public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException, CustomerNotFoundException, BalanceNotSufficientException {
         log.info("Applying an operation....");
@@ -192,4 +195,5 @@ public class BankAccountServiceImp implements BankAccountService {
 
         return false;
     }
+*/
 }
