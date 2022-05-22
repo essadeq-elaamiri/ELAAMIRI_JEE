@@ -2,6 +2,7 @@ package com.elaamiri.ebankbackend.mappers;
 
 import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.Customer;
+import org.springframework.beans.BeanUtils;
 
 public class BankMapperImp implements BankMapper{
 
@@ -9,9 +10,7 @@ public class BankMapperImp implements BankMapper{
     //map Customer to CustomerDTO
     public CustomerDTO dtoFromCustomer(Customer customer){
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setId(customer.getId());
-        customerDTO.setName(customer.getName());
-        customerDTO.setEmail(customer.getEmail());
+        BeanUtils.copyProperties(customer, customerDTO);
         return customerDTO;
     }
 
@@ -19,10 +18,7 @@ public class BankMapperImp implements BankMapper{
     @Override
     public Customer customerFromDTO(CustomerDTO customerDTO){
         Customer customer = new Customer();
-        customer.setId(customerDTO.getId());
-        customer.setName(customerDTO.getName());
-        customer.setEmail(customerDTO.getEmail());
-
+        BeanUtils.copyProperties(customerDTO, customer);
         return customer;
     }
 

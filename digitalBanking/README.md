@@ -697,3 +697,32 @@ public class BankMapperImp implements BankMapper{
 }
 
 ```
+
+Il vaut mieux d'utiliser `BeanUtils.copyProperties()`
+
+```java
+public class BankMapperImp implements BankMapper{
+
+    @Override
+    //map Customer to CustomerDTO
+    public CustomerDTO dtoFromCustomer(Customer customer){
+        CustomerDTO customerDTO = new CustomerDTO();
+        BeanUtils.copyProperties(customer, customerDTO);
+        return customerDTO;
+    }
+
+
+    @Override
+    public Customer customerFromDTO(CustomerDTO customerDTO){
+        Customer customer = new Customer();
+        BeanUtils.copyProperties(customerDTO, customer);
+        return customer;
+    }
+
+}
+
+```
+
+Ou bien utiliser un framework pour cet objectif comme :
+
+- [MapStruct](https://mapstruct.org/)
