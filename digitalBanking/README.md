@@ -631,8 +631,69 @@ Les solutions possibles:
 ```
 
 2. Utiliser les DTOs [Best practice]
-DTO : Datat Transfer Object
-Ils permet de choisir uniquement les attributs qui m'intéresse parmit les attributs de l'entité.
-On va avoir besion d'une couche qui fait le 'mapping' entre les entités et les DTOs.
+   DTO : Datat Transfer Object
+   Ils permet de choisir uniquement les attributs qui m'intéresse parmit les attributs de l'entité.
+   On va avoir besion d'une couche qui fait le 'mapping' entre les entités et les DTOs.
+
+Customer Entity:
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Customer {
+    @Id
+    private String id;
+    private String name;
+    private String email;
+
+    @OneToMany(mappedBy = "customer")// the same name used in BankAccount
+    // mappedBy assist the bidirectional association
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<BankAccount> bankAccountList;
+
+}
+```
+
+CustomerDTO
+
+```java
+@Data
+public class CustomerDTO {
+    private String id;
+    private String name;
+    private String email;
+
+}
+```
+
+Mapper (Version pénible)
+
+```java
+public class BankMapperImp implements BankMapper{
+
+    @Override
+    //map Customer to CustomerDTO
+    public CustomerDTO dtoFromCustomer(Customer customer){
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setId(customer.getId());
+        customerDTO.setName(customer.getName());
+        customerDTO.setEmail(customer.getEmail());
+        return customerDTO;
+    }
 
 
+    @Override
+    public Customer customerFromDTO(CustomerDTO customerDTO){
+        Customer customer = new Customer();
+        customer.setId(customerDTO.getId());
+        customer.setName(customerDTO.getName());
+        customer.setEmail(customerDTO.getEmail());
+
+        return customer;
+    }
+
+}
+
+```
