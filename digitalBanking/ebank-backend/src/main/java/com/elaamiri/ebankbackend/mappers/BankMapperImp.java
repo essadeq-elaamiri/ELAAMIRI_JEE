@@ -1,13 +1,7 @@
 package com.elaamiri.ebankbackend.mappers;
 
-import com.elaamiri.ebankbackend.dto.BankAccountDTO;
-import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
-import com.elaamiri.ebankbackend.dto.CustomerDTO;
-import com.elaamiri.ebankbackend.dto.SavingAccountDTO;
-import com.elaamiri.ebankbackend.entities.BankAccount;
-import com.elaamiri.ebankbackend.entities.CurrentAccount;
-import com.elaamiri.ebankbackend.entities.Customer;
-import com.elaamiri.ebankbackend.entities.SavingAccount;
+import com.elaamiri.ebankbackend.dto.*;
+import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountType;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
@@ -69,38 +63,45 @@ public class BankMapperImp implements BankMapper{
     }
 
     @Override
-    public BankAccountDTO dtoFromSavingAccount(BankAccount bankAccount) {
+    public BankAccountDTO dtoFromBankAccount(BankAccount bankAccount) {
         BankAccountDTO bankAccountDTO = null;
-        if(bankAccountDTO instanceof SavingAccountDTO){
-            bankAccountDTO = new SavingAccountDTO();
-            BeanUtils.copyProperties(bankAccount, bankAccountDTO);
-            ((SavingAccountDTO) bankAccountDTO).setInterestRate(((SavingAccountDTO) bankAccountDTO).getInterestRate());
+        if(bankAccount instanceof SavingAccount){
+            bankAccountDTO = dtoFromSavingAccount((SavingAccount) bankAccount);
+            bankAccountDTO.setAccountType(AccountType.SAVING_ACCOUNT);
+        }
+        else if(bankAccount instanceof CurrentAccount){
+            bankAccountDTO = dtoFromCurrentAccount((CurrentAccount) bankAccount);
+            bankAccountDTO.setAccountType(AccountType.CURRENT_ACCOUNT);
 
         }
-        else if(bankAccountDTO instanceof CurrentAccountDTO){
-            bankAccountDTO = new CurrentAccountDTO();
-            BeanUtils.copyProperties(bankAccount, bankAccountDTO);
-            ((CurrentAccountDTO) bankAccountDTO).setOverDraft(((CurrentAccountDTO) bankAccountDTO).getOverDraft());
-        }
-        bankAccountDTO.setCustomerDTO(dtoFromCustomer(bankAccount.getCustomer()));
         return bankAccountDTO;
     }
 
     @Override
-    public BankAccount savingAccountFromDTO(BankAccountDTO bankAccountDTO) {
+    public BankAccount bankAccountFromDTO(BankAccountDTO bankAccountDTO) {
         BankAccount bankAccount = null;
-        if (bankAccountDTO.getAccountType() == AccountType.SAVING_ACCOUNT){
-            bankAccount = new SavingAccount();
-            BeanUtils.copyProperties(bankAccountDTO, Objects.requireNonNull(bankAccount));
-            ((SavingAccount)bankAccount).setInterestRate(((SavingAccount) bankAccount).getInterestRate());
+        if (bankAccountDTO instanceof  SavingAccountDTO){
+            bankAccount = savingAccountFromDTO((SavingAccountDTO) bankAccountDTO);
+
         }
-        else if(bankAccountDTO.getAccountType() == AccountType.CURRENT_ACCOUNT){
-            bankAccount = new CurrentAccount();
-            BeanUtils.copyProperties(bankAccountDTO, Objects.requireNonNull(bankAccount));
-            ((CurrentAccount)bankAccount).setOverDraft(((CurrentAccount) bankAccount).getOverDraft());
+        else if(bankAccountDTO instanceof  CurrentAccountDTO){
+            bankAccount = currentAccountFromDTO((CurrentAccountDTO) bankAccountDTO);
         }
-        bankAccount.setCustomer(customerFromDTO(bankAccountDTO.getCustomerDTO()));
         return bankAccount;
+    }
+
+    @Override
+    public AccountOperationDTO dtoFromAccountOperation(AccountOperation accountOperation){
+        AccountOperationDTO accountOperationDTO = new AccountOperationDTO();
+        BeanUtils.copyProperties(accountOperation, accountOperationDTO);
+        accountOperationDTO.setBankAccountDTO(dtoFromBankAccount(accountOperation.getBankAccount()));
+        return accountOperationDTO;
+    }
+    @Override
+    public AccountOperation accountOperationFromDTO(AccountOperationDTO accountOperationDTO){
+        AccountOperation accountOperation = new AccountOperation();
+        BeanUtils.copyProperties(accountOperationDTO, accountOperation);
+        return accountOperation;
     }
 
 

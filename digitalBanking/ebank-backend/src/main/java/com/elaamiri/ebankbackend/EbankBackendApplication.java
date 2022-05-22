@@ -99,15 +99,15 @@ public class EbankBackendApplication {
 
 
             // creating an account
-            BankAccount b1 = bankAccountService.saveCurrentAccount(79000,310, customer.getId());
-            BankAccount b2 =  bankAccountService.saveSavingAccount(79000,3.10, customer.getId());
+            //BankAccount b1 = bankAccountService.saveCurrentAccount(79000,310, customer.getId());
+            //BankAccount b2 =  bankAccountService.saveSavingAccount(79000,3.10, customer.getId());
 
             // operations
-            bankAccountService.applyOperation(b1.getId(),12990, OperationType.DEBIT, "Debit");
-            bankAccountService.applyOperation(b1.getId(),1000, OperationType.CREDIT, "Credit");
+            //bankAccountService.applyOperation(b1.getId(),12990, OperationType.DEBIT, "Debit");
+            //bankAccountService.applyOperation(b1.getId(),1000, OperationType.CREDIT, "Credit");
             //bankAccountService.applyOperation(b1.getId(),-1000, OperationType.CREDIT, "Credit");
 
-            bankAccountService.transfer(b1.getId(), b2.getId(), 23990);
+            //bankAccountService.transfer(b1.getId(), b2.getId(), 23990);
 
 
 

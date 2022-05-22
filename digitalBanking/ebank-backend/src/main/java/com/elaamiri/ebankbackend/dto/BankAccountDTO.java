@@ -19,6 +19,6 @@ public class BankAccountDTO {
     private double balance;
     private AccountStatus status;
     private String currency;
-    private AccountType accountType;
     private CustomerDTO customerDTO;
+    private AccountType accountType;
 }

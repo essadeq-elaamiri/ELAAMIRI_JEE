@@ -20,7 +20,7 @@ import java.util.List;
 public interface BankAccountService {
     CurrentAccountDTO saveCurrentAccount(double initBalance, double overDraft, String customerId) throws CustomerNotFoundException;
     SavingAccountDTO saveSavingAccount(double initBalance, double interestRate, String customerId) throws CustomerNotFoundException;
-    BankAccountDTO saveAccount(BankAccountDTO bankAccount) throws AccountNotFoundException;
+    BankAccountDTO saveAccount(BankAccountDTO bankAccount) throws AccountNotFoundException, CustomerNotFoundException;
     boolean deleteAccount(String accountId) throws AccountNotFoundException;
     BankAccountDTO updateAccount(String id, BankAccountDTO bankAccount) throws AccountNotFoundException;
 

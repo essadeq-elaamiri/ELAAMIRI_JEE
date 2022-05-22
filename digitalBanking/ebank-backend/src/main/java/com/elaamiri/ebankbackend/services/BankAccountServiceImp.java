@@ -1,8 +1,6 @@
 package com.elaamiri.ebankbackend.services;
 
-import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
-import com.elaamiri.ebankbackend.dto.CustomerDTO;
-import com.elaamiri.ebankbackend.dto.SavingAccountDTO;
+import com.elaamiri.ebankbackend.dto.*;
 import com.elaamiri.ebankbackend.entities.*;
 import com.elaamiri.ebankbackend.entities.enumerations.AccountType;
 import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
@@ -17,12 +15,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,7 +35,6 @@ public class BankAccountServiceImp implements BankAccountService {
     BankMapper bankMapper;
 
     //Logger log = LoggerFactory.getLogger(this.getClass().getName()); // done by lombok
-
 
     @Override
     public CurrentAccountDTO saveCurrentAccount(double initBalance, double overDraft, String customerId) throws CustomerNotFoundException {
@@ -65,52 +64,59 @@ public class BankAccountServiceImp implements BankAccountService {
 
 
     @Override
-    public BankAccount saveAccount(BankAccount bankAccount) throws AccountNotFoundException {
+    public BankAccountDTO saveAccount(BankAccountDTO bankAccountDTO) throws AccountNotFoundException, CustomerNotFoundException {
         log.info("Saving account ....");
-        if(bankAccount == null) throw new AccountNotFoundException("Invalid account [NULL]");
-        bankAccount.setId(UUID.randomUUID().toString());
-        return bankAccountRepository.save(bankAccount);
+        if(bankAccountDTO == null) throw new AccountNotFoundException("Invalid account [NULL]");
+        if (bankAccountDTO instanceof SavingAccountDTO){
+            SavingAccountDTO savingAccountDTO =  (SavingAccountDTO) bankAccountDTO;
+            return saveSavingAccount(savingAccountDTO.getBalance(), savingAccountDTO.getInterestRate(), savingAccountDTO.getCustomerDTO().getId());
+        }
+        else {
+            CurrentAccountDTO currentAccountDTO = (CurrentAccountDTO) bankAccountDTO;
+            return saveCurrentAccount(currentAccountDTO.getBalance(), currentAccountDTO.getOverDraft(), currentAccountDTO.getCustomerDTO().getId());
+        }
     }
 
     @Override
     public boolean deleteAccount(String accountId) throws AccountNotFoundException {
         log.info("Deleting account ....");
-        BankAccount account =  getBankAccountById(accountId);
-        bankAccountRepository.delete(account);
+        BankAccountDTO accountDTO =  getBankAccountById(accountId);
+        bankAccountRepository.delete(bankMapper.bankAccountFromDTO(accountDTO));
         return true;
     }
 
     @Override
-    public BankAccount updateAccount(BankAccount bankAccount) throws AccountNotFoundException {
+    public BankAccountDTO updateAccount(String accountId, BankAccountDTO bankAccountDTO) throws AccountNotFoundException {
         log.info("Updating account ....");
-        BankAccount account =  getBankAccountById(bankAccount.getId());
-        return bankAccountRepository.save(account);
+        BankAccountDTO accountDTO =  getBankAccountById(bankAccountDTO.getId());
+        return bankMapper.dtoFromBankAccount(bankAccountRepository.save(bankMapper.bankAccountFromDTO(bankAccountDTO)));
     }
 
     @Override
-    public List<BankAccount> getBankAccountsList(int page, int size) {
-        return null;
+    public List<BankAccountDTO> getBankAccountsList(int page, int size) {
+        List<BankAccount> bankAccounts = bankAccountRepository.findAll(PageRequest.of(page, size)).getContent();
+        return  bankAccounts.stream().map(bankAccount ->bankMapper.dtoFromBankAccount(bankAccount)).collect(Collectors.toList());
     }
 
     @Override
-    public BankAccount getBankAccountById(String accountId) throws AccountNotFoundException {
+    public BankAccountDTO getBankAccountById(String accountId) throws AccountNotFoundException {
         log.info("Selecting an account ....");
-        return bankAccountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(null));
+        return bankMapper.dtoFromBankAccount(bankAccountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(null)));
     }
 
     @Override
     public AccountType getAccountType(String accountId) throws AccountNotFoundException {
         log.info("Getting an account type....");
-        BankAccount account = getBankAccountById(accountId);
-        if(account instanceof  CurrentAccount) return AccountType.CURRENT_ACCOUNT;
-        else if(account instanceof SavingAccount) return AccountType.SAVING_ACCOUNT;
+        BankAccountDTO accountDTO = getBankAccountById(accountId);
+        if(accountDTO instanceof  CurrentAccountDTO) return AccountType.CURRENT_ACCOUNT;
+        else if(accountDTO instanceof SavingAccountDTO) return AccountType.SAVING_ACCOUNT;
         return null;
     }
 
     @Override
     public boolean applyOperation(String accountId, double amount, OperationType operationType, String description) throws OperationFailedException, AccountNotFoundException, CustomerNotFoundException, BalanceNotSufficientException {
         log.info("Applying an operation....");
-        BankAccount account = getBankAccountById(accountId);
+        BankAccountDTO account = getBankAccountById(accountId);
 
         if(amount <= 0) throw  new OperationFailedException("Operation Failed, amount <= 0 !");
         // pass operation
@@ -124,7 +130,7 @@ public class BankAccountServiceImp implements BankAccountService {
     }
 
     @Override
-    public boolean debitAccount(BankAccount account, double amount, String description) throws BalanceNotSufficientException, AccountNotFoundException, CustomerNotFoundException {
+    public boolean debitAccount(BankAccountDTO account, double amount, String description) throws BalanceNotSufficientException, AccountNotFoundException, CustomerNotFoundException {
         log.info("Applying a debit....");
         double balance = account.getBalance();
         if(balance < amount) throw new BalanceNotSufficientException("Operation Failed, balance < amount !");

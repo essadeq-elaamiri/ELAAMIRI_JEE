@@ -1,12 +1,11 @@
 package com.elaamiri.ebankbackend.web;
 
+import com.elaamiri.ebankbackend.dto.BankAccountDTO;
 import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
-import com.elaamiri.ebankbackend.dto.currentAccountDTO;
+import com.elaamiri.ebankbackend.exceptions.AccountNotFoundException;
 import com.elaamiri.ebankbackend.services.interfaces.BankAccountService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +16,18 @@ public class BankAccountRestController {
 
     // get all accounts
     @GetMapping("/accounts")
-    public List<CurrentAccountDTO> getAllCurrentAccounts(@RequestParam int page, @RequestParam int size){
-        return bankAccountService.get
+    public List<BankAccountDTO> getAllCurrentAccounts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
+        return bankAccountService.getBankAccountsList(page, size);
+    }
+
+    @GetMapping("/accounts/{id}")
+    public BankAccountDTO getBankAccount(@PathVariable String id) throws AccountNotFoundException {
+        return bankAccountService.getBankAccountById(id);
+    }
+
+    @PostMapping("/accounts")
+    public BankAccountDTO saveBankAccount(@RequestBody BankAccountDTO bankAccountDTO) throws AccountNotFoundException {
+        return  bankAccountService.saveAccount(bankAccountDTO);
     }
 
 }
