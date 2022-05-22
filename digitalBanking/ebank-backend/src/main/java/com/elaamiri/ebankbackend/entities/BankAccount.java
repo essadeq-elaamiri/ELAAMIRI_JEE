@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TYPE", length = 4, discriminatorType = DiscriminatorType.STRING)// string deault
-public class BankAccount {
+public abstract class BankAccount {
     @Id
     private String id;
     @DateTimeFormat(pattern = "YYYY-MM-DD")
