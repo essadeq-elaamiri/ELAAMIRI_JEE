@@ -614,4 +614,25 @@ Après la correction det l'erreur 'Amount <= 0':
 
 ![](./screenshots/9.JPG)
 
-#### Couche Web 1:00:04
+#### Couche Web
+
+La relation bidirectionnelle entre Customer et Account, génère le problème de `Dependence cyclique`
+Les solutions possibles:
+
+![10](./screenshots/10.JPG)
+
+1. Utilise l'annotation `@JsonProperty` de `com.fasterxml.jackson.annotation.JsonProperty` au-dessus de l'attribut `bankAccountList` de `Customer`, pour éviter de serialiser l'attribut en format Json.
+
+```java
+    @OneToMany(mappedBy = "customer")// the same name used in BankAccount
+    // mappedBy assist the bidirectional association
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<BankAccount> bankAccountList;
+```
+
+2. Utiliser les DTOs [Best practice]
+DTO : Datat Transfer Object
+Ils permet de choisir uniquement les attributs qui m'intéresse parmit les attributs de l'entité.
+On va avoir besion d'une couche qui fait le 'mapping' entre les entités et les DTOs.
+
+

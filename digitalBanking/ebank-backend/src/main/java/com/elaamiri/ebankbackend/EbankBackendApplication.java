@@ -78,7 +78,7 @@ public class EbankBackendApplication {
 
     }
 
-    //@Bean
+    @Bean
     CommandLineRunner TestingService(CustomerService customerService, BankAccountService bankAccountService){
         return (args)->{
             // creating an customer

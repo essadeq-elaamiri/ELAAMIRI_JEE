@@ -1,5 +1,6 @@
 package com.elaamiri.ebankbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")// the same name used in BankAccount
     // mappedBy assist the bidirectional association
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<BankAccount> bankAccountList;
 
 }
