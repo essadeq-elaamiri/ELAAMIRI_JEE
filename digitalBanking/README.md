@@ -701,6 +701,7 @@ public class BankMapperImp implements BankMapper{
 Il vaut mieux d'utiliser `BeanUtils.copyProperties()`
 
 ```java
+@Service
 public class BankMapperImp implements BankMapper{
 
     @Override
@@ -726,3 +727,22 @@ public class BankMapperImp implements BankMapper{
 Ou bien utiliser un framework pour cet objectif comme :
 
 - [MapStruct](https://mapstruct.org/)
+
+On utilise le mapper dans la couche service:
+
+```java
+@Override
+    public List<CustomerDTO> getCustomersList(int page, int size, String keyword) {
+        log.info("Selecting  customers ....");
+        List<Customer> customersList = new ArrayList<>();
+        // mapping
+        if(keyword != null) customersList =  customerRepository.findCustomersByNameContains(keyword, PageRequest.of(page, size)).getContent();
+        else customersList =  customerRepository.findAll( PageRequest.of(page, size)).getContent();
+
+        return customersList.stream().map(customer -> {
+            return bankMapper.dtoFromCustomer(customer);
+        }).collect(Collectors.toList());
+    }
+```
+
+1:45

@@ -2,6 +2,7 @@ package com.elaamiri.ebankbackend.services.interfaces;
 
 
 
+import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.Customer;
 import com.elaamiri.ebankbackend.exceptions.CustomerNotFoundException;
 
@@ -14,6 +15,6 @@ public interface CustomerService {
     boolean deleteCustomer(String customerId) throws CustomerNotFoundException;
 
     Customer getCustomerById(String id) throws CustomerNotFoundException;
-    List<Customer> getCustomersList(int page, int size, String keyword);
+    List<CustomerDTO> getCustomersList(int page, int size, String keyword);
 
 }

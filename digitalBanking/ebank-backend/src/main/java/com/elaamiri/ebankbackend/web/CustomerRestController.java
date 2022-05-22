@@ -1,5 +1,6 @@
 package com.elaamiri.ebankbackend.web;
 
+import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.Customer;
 import com.elaamiri.ebankbackend.services.interfaces.CustomerService;
 import lombok.AllArgsConstructor;
@@ -18,9 +19,9 @@ public class CustomerRestController {
     private CustomerService customerService;
     // clients list
     @GetMapping("/customers")
-    List<Customer> getCustomersList(@RequestParam(name = "page",defaultValue = "0") int page,
-                                    @RequestParam(name = "size", defaultValue = "5") int size,
-                                    @RequestParam(name = "keyword", defaultValue = "") String keyword){
+    List<CustomerDTO> getCustomersList(@RequestParam(name = "page",defaultValue = "0") int page,
+                                       @RequestParam(name = "size", defaultValue = "5") int size,
+                                       @RequestParam(name = "keyword", defaultValue = "") String keyword){
         return customerService.getCustomersList(page, size, "");
     }
 }

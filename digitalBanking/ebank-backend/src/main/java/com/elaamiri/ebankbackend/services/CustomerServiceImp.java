@@ -1,7 +1,9 @@
 package com.elaamiri.ebankbackend.services;
 
+import com.elaamiri.ebankbackend.dto.CustomerDTO;
 import com.elaamiri.ebankbackend.entities.Customer;
 import com.elaamiri.ebankbackend.exceptions.CustomerNotFoundException;
+import com.elaamiri.ebankbackend.mappers.BankMapper;
 import com.elaamiri.ebankbackend.repositories.CustomerRepository;
 import com.elaamiri.ebankbackend.services.interfaces.CustomerService;
 import lombok.AllArgsConstructor;
@@ -10,8 +12,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -20,6 +24,7 @@ import java.util.UUID;
 
 public class CustomerServiceImp implements CustomerService {
     CustomerRepository customerRepository;
+    BankMapper bankMapper;
 
     @Override
     public Customer saveCustomer(Customer customer) throws CustomerNotFoundException {
@@ -51,9 +56,15 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public List<Customer> getCustomersList(int page, int size, String keyword) {
+    public List<CustomerDTO> getCustomersList(int page, int size, String keyword) {
         log.info("Selecting  customers ....");
-        if(keyword != null) return customerRepository.findCustomersByNameContains(keyword, PageRequest.of(page, size)).getContent();
-        return customerRepository.findAll( PageRequest.of(page, size)).getContent();
+        List<Customer> customersList = new ArrayList<>();
+        // mapping
+        if(keyword != null) customersList =  customerRepository.findCustomersByNameContains(keyword, PageRequest.of(page, size)).getContent();
+        else customersList =  customerRepository.findAll( PageRequest.of(page, size)).getContent();
+
+        return customersList.stream().map(customer -> {
+            return bankMapper.dtoFromCustomer(customer);
+        }).collect(Collectors.toList());
     }
 }
