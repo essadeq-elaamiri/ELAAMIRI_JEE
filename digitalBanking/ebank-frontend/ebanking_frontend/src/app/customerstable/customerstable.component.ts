@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-customerstable',
   templateUrl: './customerstable.component.html',

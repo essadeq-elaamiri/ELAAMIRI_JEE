@@ -12,11 +12,27 @@ export class CustomersComponent implements OnInit {
   constructor(private http:HttpClient) { }
 
   ngOnInit(): void {
+    // deprecated syntax
+    /*
     this.http.get("http://localhost:8080/customers").subscribe(data=>{
       this.customers = data;
     }, error=> {
       console.error(error);
     });
+    */
+    // pefered
+    this.http.get("http://localhost:8080/customers").subscribe({
+      next: data => {
+          this.customers = data;
+      } ,
+      error : err=> {
+
+      console.error(err);
+
+      }
+
+    });
+
   }
 
 }

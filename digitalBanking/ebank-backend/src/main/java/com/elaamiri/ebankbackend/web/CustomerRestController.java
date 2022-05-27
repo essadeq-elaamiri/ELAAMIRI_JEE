@@ -15,6 +15,8 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin("*")
+
 public class CustomerRestController {
     private CustomerService customerService;
     // clients list

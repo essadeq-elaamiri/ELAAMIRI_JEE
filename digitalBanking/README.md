@@ -1234,3 +1234,71 @@ export class CustomerstableComponent implements OnInit {
 ```
 
 Dans la parties html
+On passe la list au component tableau.
+
+```html
+<app-customerstable [customersList]="customers"></app-customerstable>
+```
+
+Et on la résupere à partir du component enfant à travèr:
+
+```ts
+  @Input() customersList: any; // get data from parent
+
+```
+
+**Problème** : @Input() customersList: any; // get data from parent
+
+```diff
+- Access to XMLHttpRequest at 'http://localhost:8080/customers' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+![](./screenshots/24.JPG)
+
+**Solution**
+Dans les controleur du REST API on active:
+
+```java
+...
+@RestController
+@CrossOrigin("*")
+...
+```
+
+Correction du syctax pour envoyer une requête HTTP:
+
+```ts
+ngOnInit(): void {
+    // deprecated syntax
+    /*
+    this.http.get("http://localhost:8080/customers").subscribe(data=>{
+      this.customers = data;
+    }, error=> {
+      console.error(error);
+    });
+    */
+    // pefered
+    this.http.get("http://localhost:8080/customers").subscribe({
+      next: data => {
+          this.customers = data;
+      } ,
+      error : err=> {
+        console.error(err);
+      }
+
+    });
+
+  }
+```
+
+**Organiser le code**
+Les traitement doivent être dans la couche service.
+
+Génerer service
+
+```terminal
+ng generate sevice services/customerService
+or
+ng g s services/customerService
+
+```

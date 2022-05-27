@@ -24,7 +24,8 @@
         <tbody *ngFor="let customer of customersList">
           <tr>
             <th scope="row">{{ customer.id }}</th>
-            <td>{{ customer.name }}</td>
+            <td>{{ customer.name | uppercase }}</td>
+            <!-- pipe-->
             <td>{{ customer.email }}</td>
           </tr>
         </tbody>
