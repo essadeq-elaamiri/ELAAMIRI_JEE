@@ -11,6 +11,9 @@
       >
     </div>
     <div class="card-body">
+      <div class="alert alert-danger" *ngIf="dataFromParent">
+        <p>{{ errorObj }}</p>
+      </div>
       <table class="table" *ngIf="customersList">
         <!--Show if customersList is not empty-->
         <thead>

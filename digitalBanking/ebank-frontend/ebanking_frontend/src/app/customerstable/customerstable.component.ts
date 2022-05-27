@@ -9,6 +9,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CustomerstableComponent implements OnInit {
   @Input() customersList: any; // get data from parent
+  @Input() errorObj: Object | undefined;
+  @Input() dataFromParent: Object | undefined;
+
   constructor() { }
 
   ngOnInit(): void {
