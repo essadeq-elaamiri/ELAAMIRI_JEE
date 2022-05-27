@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-customerstable',
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./customerstable.component.css']
 })
 export class CustomerstableComponent implements OnInit {
-
+  @Input() customersList: any; // get data from parent
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

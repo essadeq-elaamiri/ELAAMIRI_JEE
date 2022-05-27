@@ -1,1 +1,34 @@
-<p>customerstable works!</p>
+<div class="container">
+  <div class="card mt-5 mb-5">
+    <div class="card-header">
+      <h2>Customers list</h2>
+      <span class="badge rounded-pill bg-secondary">Customers in total</span>
+      <span class="badge rounded-pill bg-secondary mx-2"
+        >12 Customers/page</span
+      >
+      <span class="badge rounded-pill bg-secondary mx-2"
+        >66 Pages in total</span
+      >
+    </div>
+    <div class="card-body">
+      <table class="table" *ngIf="customersList">
+        <!--Show if customersList is not empty-->
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email@</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let customer of customersList">
+          <tr>
+            <th scope="row">{{ customer.id }}</th>
+            <td>{{ customer.name }}</td>
+            <td>{{ customer.email }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

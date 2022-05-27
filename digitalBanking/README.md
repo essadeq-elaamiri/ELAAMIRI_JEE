@@ -1182,3 +1182,55 @@ Jusqu'au ici, on a pas d'affichage, car on doit spécifier le rendu des routes v
 <!-- the routes content goes here -->
 <router-outlet> </router-outlet>
 ```
+
+### Interaction avec API
+
+On utilisant le module `hhtpClientModule`, qu'il faut l'importer dans `appModule`
+
+```ts
+import {HttpClientModule} from '@angular/common/http';
+@NgModule({
+  ....
+imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  ....
+})
+```
+
+Pour l'utiliser, il faut Injecter `HttpClient` dans le module `customers` en utilisant le contructeur.
+
+```ts
+...
+export class CustomerstableComponent implements OnInit {
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {}
+}
+...
+```
+
+Recupérer la listes des customers:
+
+```ts
+export class CustomerstableComponent implements OnInit {
+  customers: any; // will be a model Customer
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get("http://localhost:8080/customers").subscribe(
+      (data) => {
+        this.customers = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+}
+```
+
+Dans la parties html
