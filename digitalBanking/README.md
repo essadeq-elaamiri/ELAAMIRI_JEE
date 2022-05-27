@@ -1151,7 +1151,6 @@ Appeler le component via son selector `<app-navbar></app-navbar>` dans `app/app.
 
 **Création d'un système de routage**
 
-Création d'un component customers (page de gestion des clients)
+Création d'un component customers (page de gestion des clients), et accounts
 
 ![](./screenshots/23.JPG)
-
