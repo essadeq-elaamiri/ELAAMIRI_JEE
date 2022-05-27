@@ -1154,3 +1154,31 @@ Appeler le component via son selector `<app-navbar></app-navbar>` dans `app/app.
 Création d'un component customers (page de gestion des clients), et accounts
 
 ![](./screenshots/23.JPG)
+
+On va configurer le routage dans le fichier `app-routing.module.ts`
+
+```ts
+const routes: Routes = [
+  { path: "customers", component: CustomersComponent },
+  { path: "accounts", component: AccountsComponent },
+];
+```
+
+et dans HTML:
+
+```html
+<li>
+  <a class="dropdown-item" routerLink="/customers">Customers</a>
+</li>
+<li>
+  <a class="dropdown-item" routerLink="/accounts">Accounts</a>
+</li>
+```
+
+Jusqu'au ici, on a pas d'affichage, car on doit spécifier le rendu des routes va être afficher:
+
+```html
+<app-navbar></app-navbar>
+<!-- the routes content goes here -->
+<router-outlet> </router-outlet>
+```
