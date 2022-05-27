@@ -1072,4 +1072,44 @@ Préquis :
 - NodeJs + NPM (Node package manager)
 
 1. Installer Angular/CLI
+
+`npm install -g @angular/cli`
+
 2. Création d'un nouveau projet.
+
+`ng new ebanking_frontend`
+
+![15](./screenshots/15.JPG)
+
+Pour ajouter le module Routing:
+
+`ng generate module app-routing --flat --module=app` [(details ? :link:)](https://angular.io/tutorial/toh-pt5)
+
+INFO: Poarametrer le Terminal de Intellij (settings -> tools -> terminal)
+
+3. Exécuter le projet
+
+`ng serve`
+
+![](./screenshots/16.JPG)
+
+PowerShell script autorisation :
+
+- Run PowerShell in administrator mode
+- Run : `Set-ExecutionPolicy RemoteSigned`
+
+Visit our application on `localhost:4200`.
+
+![](./screenshots/17.JPG)
+
+#### Angular process
+
+![](./screenshots/18.JPG)
+
+Installer les dépendences : Bootstrap et bootstrap-icons
+
+`npm install bootstrap bootstrap-icons --save`
+
+--save : pour les ajouter dans le fichier `package.json`
+
+![19](./screenshots/19.JPG)
