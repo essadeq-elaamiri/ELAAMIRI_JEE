@@ -1144,4 +1144,14 @@ or
 ng generate component navbar
 
 ```
+
 ![22](./screenshots/22.JPG)
+
+Appeler le component via son selector `<app-navbar></app-navbar>` dans `app/app.component.html`
+
+**Création d'un système de routage**
+
+Création d'un component customers (page de gestion des clients)
+
+![](./screenshots/23.JPG)
+
