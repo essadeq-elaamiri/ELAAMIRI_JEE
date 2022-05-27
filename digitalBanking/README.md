@@ -1062,3 +1062,14 @@ TODO: Backend
 
 - [ ] Backend operation
 - [ ] Rest update & delete things
+
+# Front-End
+
+Dans la partie front-end on utilisera le framework [Angular](https://angular.io/docs)
+
+Préquis :
+
+- NodeJs + NPM (Node package manager)
+
+1. Installer Angular/CLI
+2. Création d'un nouveau projet.
