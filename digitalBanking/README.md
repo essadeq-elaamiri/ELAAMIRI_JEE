@@ -1108,8 +1108,40 @@ Visit our application on `localhost:4200`.
 
 Installer les dépendences : Bootstrap et bootstrap-icons
 
-`npm install bootstrap bootstrap-icons --save`
+```terminal
+npm install bootstrap bootstrap-icons --save
+```
 
 --save : pour les ajouter dans le fichier `package.json`
 
 ![19](./screenshots/19.JPG)
+
+Pour utiliser bootstrap il faut l'ajouter dans `angular.json`
+
+```json
+{
+  "styles": [
+    "src/styles.css",
+    "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+  ],
+  "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
+}
+```
+
+![](./screenshots/20.JPG)
+
+Replace cintent in `app/app.component.html` with bootstrap 5 Nabar.
+
+![21](./screenshots/21.JPG)
+
+Create Navbar component
+
+```
+ng g c navbar
+
+or
+
+ng generate component navbar
+
+```
+![22](./screenshots/22.JPG)
