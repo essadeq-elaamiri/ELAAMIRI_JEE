@@ -1,1 +1,19 @@
-<p>search-form works!</p>
+<form
+  *ngIf="customersSearchformGroup && searchCustomers"
+  [formGroup]="customersSearchformGroup"
+  (ngSubmit)="searchCustomers()"
+>
+  <div class="input-group mb-3">
+    <input
+      formControlName="searchKeyword"
+      type="text"
+      class="form-control"
+      placeholder="Search with a keyword"
+      aria-label="Search with a keyword"
+      aria-describedby="button-addon2"
+    />
+    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+      <i class="bi bi-star-fill"></i>
+    </button>
+  </div>
+</form>

@@ -17,7 +17,7 @@ export class CustomersComponent implements OnInit {
   errorObj: Object | undefined;
   errorMsg: String | undefined;
 
-  customersSearchformGroup: FormGroup | undefined;
+  customersSearchformGroup: FormGroup | undefined ;
 
   //errorMessage!: String | undefined;
   //errorMessage: String | null=null; // default value
@@ -32,7 +32,7 @@ export class CustomersComponent implements OnInit {
 
     // init form
     this.customersSearchformGroup = this.formBuilder.group({
-      earchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+      searchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
     });
 
     this.customers$ = this.customerService.getCustomersList().pipe(
@@ -42,8 +42,14 @@ export class CustomersComponent implements OnInit {
         return throwError(err);
       })
     ); //traiter les erreurs
+    }
 
+    searchCustomers(){
+      //alert("hello");
+      this.customers$ = this.customerService.getCustomersList("ss");
+    }
 
+    //======================== where in ngOnInit()
     //this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
 
 
@@ -91,6 +97,6 @@ export class CustomersComponent implements OnInit {
 
     });
     */
-  }
+
 
 }

@@ -1474,7 +1474,7 @@ ngOnInit(): void {
 
   // init form
   this.formGroup = this.formBuilder.group({
-    earchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+    searchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
   });
 }
 ```
@@ -1482,5 +1482,25 @@ ngOnInit(): void {
 et dans l'HTML
 
 ```html
+<form
+  *ngIf="customersSearchformGroup"
+  [formGroup]="customersSearchformGroup"
+  (ngSubmit)="searchCustomers()"
+>
+  {{ this.customersSearchformGroup.value | json }}
 
+  <div class="input-group mb-3">
+    <input
+      formControlName="searchKeyword"
+      type="text"
+      class="form-control"
+      placeholder="Search with a keyword"
+      aria-label="Search with a keyword"
+      aria-describedby="button-addon2"
+    />
+    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+      <i class="bi bi-star-fill"></i>
+    </button>
+  </div>
+</form>
 ```
