@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
 
@@ -17,8 +17,8 @@ export class AddNewCustomerComponent implements OnInit {
 
   ngOnInit(): void {
     this.addNewCustomerFromGroup = this.formBuilder.group({
-        name : this.formBuilder.control(""),
-        email: this.formBuilder.control(""),
+        name : this.formBuilder.control(null, [Validators.required, Validators.minLength(3)]), // validations
+        email: this.formBuilder.control(null, [Validators.required, Validators.email]),
     });
   }
 
