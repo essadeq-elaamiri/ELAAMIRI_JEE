@@ -46,7 +46,7 @@ export class CustomersComponent implements OnInit {
 
     searchCustomers(){
       //alert("hello");
-      this.customers$ = this.customerService.getCustomersList("ss");
+      this.customers$ = this.customerService.getCustomersList(this.customersSearchformGroup?.value["searchKeyword"]);
     }
 
     //======================== where in ngOnInit()
