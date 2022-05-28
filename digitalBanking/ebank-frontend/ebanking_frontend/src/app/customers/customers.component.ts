@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { CustomerServiceService } from '../services/customer-service.service';
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-  customers$!: Observable<any>; // will be a model Customer
+  customers$!: Observable<Array<Customer>>; // will be a model Customer
   // convention de nomage : tous les variables de type Obesrvable, se termine avec un $
   //customers: any; // will be a model Customer
   errorObj: Object | undefined;

@@ -1382,3 +1382,21 @@ dans html
   <!-- customers$ | async, faire subscribe automatquement-->
 </div>
 ```
+
+Ajouter le model Customer
+
+```ts
+export interface Customer {
+  id: String;
+  name: String;
+  email: String;
+}
+```
+
+Utiliser le dans la couche service:
+
+```ts
+public getCustomersList() : Observable<Array<Customer>>{ // any for result datatype
+    return this.http.get<Array<Customer>>("http://localhost:8080/customers");
+  }
+```
