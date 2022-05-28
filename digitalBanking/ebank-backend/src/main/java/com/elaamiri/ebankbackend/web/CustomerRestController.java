@@ -24,7 +24,7 @@ public class CustomerRestController {
     public List<CustomerDTO> getCustomersList(@RequestParam(name = "page",defaultValue = "0") int page,
                                        @RequestParam(name = "size", defaultValue = "5") int size,
                                        @RequestParam(name = "keyword", defaultValue = "") String keyword){
-        return customerService.getCustomersList(page, size, "");
+        return customerService.getCustomersList(page, size, keyword);
     }
 
     @GetMapping("/customers/{id}")

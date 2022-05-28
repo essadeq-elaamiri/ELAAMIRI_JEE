@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
@@ -16,6 +17,8 @@ export class CustomersComponent implements OnInit {
   errorObj: Object | undefined;
   errorMsg: String | undefined;
 
+  customersSearchformGroup: FormGroup | undefined;
+
   //errorMessage!: String | undefined;
   //errorMessage: String | null=null; // default value
   //errorMessage: String = ""; // initialize
@@ -23,9 +26,14 @@ export class CustomersComponent implements OnInit {
 
 
   /*constructor(private http:HttpClient) { }*/
-  constructor(private customerService: CustomerServiceService) { } // injection
+  constructor(private customerService: CustomerServiceService, private formBuilder: FormBuilder) { } // injection
 
   ngOnInit(): void {
+
+    // init form
+    this.customersSearchformGroup = this.formBuilder.group({
+      earchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+    });
 
     this.customers$ = this.customerService.getCustomersList().pipe(
       catchError(err => {

@@ -1437,3 +1437,50 @@ Utiliser les templates:
   </ng-template>
 </div>
 ```
+
+Ajouter le loading
+
+```html
+<div class="container mt-3">
+  <ng-container *ngIf="customers$ | async; else loadingOrErrorAlert">
+    <app-customerstable
+      [customersList]="customers$ | async"
+      [errorObj]="errorObj"
+    ></app-customerstable>
+  </ng-container>
+
+  <ng-template #loadingOrErrorAlert>
+    <ng-container *ngIf="errorObj; else loading">
+      <app-alert-component [alertMessage]="errorMsg"></app-alert-component>
+    </ng-container>
+
+    <!-- loading-->
+    <ng-template #loading>
+      <app-loading-spinner></app-loading-spinner>
+    </ng-template>
+  </ng-template>
+</div>
+```
+
+**Utiliser ReactiveFormsModule**
+
+- Importer le dans `app.module.ts` [lib: `import { ReactiveFormsModule } from '@angular/forms';`]
+- Declarer une variable `formGroup: FormGroup` pour l'associer à une forme.
+- Injecter le service `FormBuilder`
+
+```ts
+constructor(private customerService: CustomerServiceService, private formBuilder: FormBuilder) { } // injection
+ngOnInit(): void {
+
+  // init form
+  this.formGroup = this.formBuilder.group({
+    earchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+  });
+}
+```
+
+et dans l'HTML
+
+```html
+
+```
