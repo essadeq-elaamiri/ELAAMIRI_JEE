@@ -10,6 +10,8 @@ import { AccountsComponent } from './accounts/accounts.component';
 import { CustomerstableComponent } from './customerstable/customerstable.component';
 import { AlertComponentComponent } from './alert-component/alert-component.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SearchFormComponent } from './search-form/search-form.component';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     AccountsComponent,
     CustomerstableComponent,
     AlertComponentComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    SearchFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

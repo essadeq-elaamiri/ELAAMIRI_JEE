@@ -1437,3 +1437,97 @@ Utiliser les templates:
   </ng-template>
 </div>
 ```
+
+Ajouter le loading
+
+```html
+<div class="container mt-3">
+  <ng-container *ngIf="customers$ | async; else loadingOrErrorAlert">
+    <app-customerstable
+      [customersList]="customers$ | async"
+      [errorObj]="errorObj"
+    ></app-customerstable>
+  </ng-container>
+
+  <ng-template #loadingOrErrorAlert>
+    <ng-container *ngIf="errorObj; else loading">
+      <app-alert-component [alertMessage]="errorMsg"></app-alert-component>
+    </ng-container>
+
+    <!-- loading-->
+    <ng-template #loading>
+      <app-loading-spinner></app-loading-spinner>
+    </ng-template>
+  </ng-template>
+</div>
+```
+
+**Utiliser ReactiveFormsModule**
+
+- Importer le dans `app.module.ts` [lib: `import { ReactiveFormsModule } from '@angular/forms';`]
+- Declarer une variable `formGroup: FormGroup` pour l'associer à une forme.
+- Injecter le service `FormBuilder`
+
+```ts
+constructor(private customerService: CustomerServiceService, private formBuilder: FormBuilder) { } // injection
+ngOnInit(): void {
+
+  // init form
+  this.formGroup = this.formBuilder.group({
+    searchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+  });
+}
+```
+
+et dans l'HTML
+
+```html
+<form
+  *ngIf="customersSearchformGroup"
+  [formGroup]="customersSearchformGroup"
+  (ngSubmit)="searchCustomers()"
+>
+  {{ this.customersSearchformGroup.value | json }}
+
+  <div class="input-group mb-3">
+    <input
+      formControlName="searchKeyword"
+      type="text"
+      class="form-control"
+      placeholder="Search with a keyword"
+      aria-label="Search with a keyword"
+      aria-describedby="button-addon2"
+    />
+    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+      <i class="bi bi-star-fill"></i>
+    </button>
+  </div>
+</form>
+```
+
+Ajouter les variables dans `environement.ts`:
+
+```ts
+export const environment = {
+  production: false,
+  backendBaseURL: "http://localhost:8080",
+};
+
+//Accessible par
+environment.backendBaseURL ...
+
+```
+
+Utiliser les icons de bootstrap:
+
+- ajouter dans le ficher css.
+
+```css
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+```
+
+- utiliser dans html ([icons:link:](https://icons.getbootstrap.com))
+
+```html
+<i class="bi bi-search"></i>
+```
