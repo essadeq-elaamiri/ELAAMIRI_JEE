@@ -32,7 +32,7 @@ export class CustomersComponent implements OnInit {
 
     // init form
     this.customersSearchformGroup = this.formBuilder.group({
-      searchKeyword: this.formBuilder.control("Search key word goes here"), // initial/ default value/
+      searchKeyword: this.formBuilder.control(""), // initial/ default value/
     });
 
     this.customers$ = this.customerService.getCustomersList().pipe(

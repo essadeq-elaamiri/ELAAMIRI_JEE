@@ -1504,3 +1504,30 @@ et dans l'HTML
   </div>
 </form>
 ```
+
+Ajouter les variables dans `environement.ts`:
+
+```ts
+export const environment = {
+  production: false,
+  backendBaseURL: "http://localhost:8080",
+};
+
+//Accessible par
+environment.backendBaseURL ...
+
+```
+
+Utiliser les icons de bootstrap:
+
+- ajouter dans le ficher css.
+
+```css
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+```
+
+- utiliser dans html ([icons:link:](https://icons.getbootstrap.com))
+
+```html
+<i class="bi bi-search"></i>
+```
