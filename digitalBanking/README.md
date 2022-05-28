@@ -1062,3 +1062,378 @@ TODO: Backend
 
 - [ ] Backend operation
 - [ ] Rest update & delete things
+
+# Front-End
+
+Dans la partie front-end on utilisera le framework [Angular](https://angular.io/docs)
+
+Préquis :
+
+- NodeJs + NPM (Node package manager)
+
+1. Installer Angular/CLI
+
+`npm install -g @angular/cli`
+
+2. Création d'un nouveau projet.
+
+`ng new ebanking_frontend`
+
+![15](./screenshots/15.JPG)
+
+Pour ajouter le module Routing:
+
+`ng generate module app-routing --flat --module=app` [(details ? :link:)](https://angular.io/tutorial/toh-pt5)
+
+INFO: Poarametrer le Terminal de Intellij (settings -> tools -> terminal)
+
+3. Exécuter le projet
+
+`ng serve`
+
+![](./screenshots/16.JPG)
+
+PowerShell script autorisation :
+
+- Run PowerShell in administrator mode
+- Run : `Set-ExecutionPolicy RemoteSigned`
+
+Visit our application on `localhost:4200`.
+
+![](./screenshots/17.JPG)
+
+#### Angular process
+
+![](./screenshots/18.JPG)
+
+Installer les dépendences : Bootstrap et bootstrap-icons
+
+```terminal
+npm install bootstrap bootstrap-icons --save
+```
+
+--save : pour les ajouter dans le fichier `package.json`
+
+![19](./screenshots/19.JPG)
+
+Pour utiliser bootstrap il faut l'ajouter dans `angular.json`
+
+```json
+{
+  "styles": [
+    "src/styles.css",
+    "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+  ],
+  "scripts": ["./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
+}
+```
+
+![](./screenshots/20.JPG)
+
+Replace cintent in `app/app.component.html` with bootstrap 5 Nabar.
+
+![21](./screenshots/21.JPG)
+
+Create Navbar component
+
+```
+ng g c navbar
+
+or
+
+ng generate component navbar
+
+```
+
+![22](./screenshots/22.JPG)
+
+Appeler le component via son selector `<app-navbar></app-navbar>` dans `app/app.component.html`
+
+**Création d'un système de routage**
+
+Création d'un component customers (page de gestion des clients), et accounts
+
+![](./screenshots/23.JPG)
+
+On va configurer le routage dans le fichier `app-routing.module.ts`
+
+```ts
+const routes: Routes = [
+  { path: "customers", component: CustomersComponent },
+  { path: "accounts", component: AccountsComponent },
+];
+```
+
+et dans HTML:
+
+```html
+<li>
+  <a class="dropdown-item" routerLink="/customers">Customers</a>
+</li>
+<li>
+  <a class="dropdown-item" routerLink="/accounts">Accounts</a>
+</li>
+```
+
+Jusqu'au ici, on a pas d'affichage, car on doit spécifier le rendu des routes va être afficher:
+
+```html
+<app-navbar></app-navbar>
+<!-- the routes content goes here -->
+<router-outlet> </router-outlet>
+```
+
+### Interaction avec API
+
+On utilisant le module `hhtpClientModule`, qu'il faut l'importer dans `appModule`
+
+```ts
+import {HttpClientModule} from '@angular/common/http';
+@NgModule({
+  ....
+imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule
+  ],
+  ....
+})
+```
+
+Pour l'utiliser, il faut Injecter `HttpClient` dans le module `customers` en utilisant le contructeur.
+
+```ts
+...
+export class CustomerstableComponent implements OnInit {
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {}
+}
+...
+```
+
+Recupérer la listes des customers:
+
+```ts
+export class CustomerstableComponent implements OnInit {
+  customers: any; // will be a model Customer
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get("http://localhost:8080/customers").subscribe(
+      (data) => {
+        this.customers = data;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+}
+```
+
+Dans la parties html
+On passe la list au component tableau.
+
+```html
+<app-customerstable [customersList]="customers"></app-customerstable>
+```
+
+Et on la résupere à partir du component enfant à travèr:
+
+```ts
+  @Input() customersList: any; // get data from parent
+
+```
+
+**Problème** : @Input() customersList: any; // get data from parent
+
+```diff
+- Access to XMLHttpRequest at 'http://localhost:8080/customers' from origin 'http://localhost:4200' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+![](./screenshots/24.JPG)
+
+**Solution**
+Dans les controleur du REST API on active:
+
+```java
+...
+@RestController
+@CrossOrigin("*")
+...
+```
+
+Correction du syctax pour envoyer une requête HTTP:
+
+```ts
+ngOnInit(): void {
+    // deprecated syntax
+    /*
+    this.http.get("http://localhost:8080/customers").subscribe(data=>{
+      this.customers = data;
+    }, error=> {
+      console.error(error);
+    });
+    */
+    // pefered
+    this.http.get("http://localhost:8080/customers").subscribe({
+      next: data => {
+          this.customers = data;
+      } ,
+      error : err=> {
+        console.error(err);
+      }
+
+    });
+
+  }
+```
+
+**Organiser le code**
+Les traitement doivent être dans la couche service.
+
+Génerer service
+
+```terminal
+ng generate sevice services/customerService
+or
+ng g s services/customerService
+
+```
+
+![](./screenshots/25.JPG)
+
+```ts
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+
+@Injectable({
+  providedIn: "root", // disponible in all the application
+  // no need to be declared in providers[]
+})
+export class CustomerServiceService {
+  constructor(private http: HttpClient) {}
+
+  public getCustomersList(): Observable<any> {
+    // any for result datatype
+    return this.http.get("http://localhost:8080/customers");
+  }
+}
+```
+
+Et on change dans `customers.component.ts`
+
+```ts
+constructor(private customerService: CustomerServiceService) { }
+
+  ngOnInit(): void {
+
+    this.customerService.getCustomersList().subscribe(
+      {
+      next: data => {
+          this.customers = data;
+      } ,
+      error : err=> {
+
+      console.error(err);
+
+      }
+
+    }
+    );
+  }
+
+```
+
+Pour afficher un objet en forma Json:
+
+```html
+<app-alert-component
+  *ngIf="errorObj"
+  [alertMessage]="errorObj | json"
+></app-alert-component>
+```
+
+Une autre approche : faire subscibe dans la partie HTML
+
+customers.component.ts
+
+```ts
+customers$: Observable<any> | undefined; // will be a model Customer
+  // convention de nomage : tous les variables de type Obesrvable, se termine avec un $
+ ngOnInit(): void {
+
+    this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
+
+ }
+```
+
+dans html
+
+```html
+<div class="container">
+  <app-customerstable
+    [customersList]="customers$ | async"
+    [errorObj]="errorObj"
+  ></app-customerstable>
+  <!-- customers$ | async, faire subscribe automatquement-->
+</div>
+```
+
+Ajouter le model Customer
+
+```ts
+export interface Customer {
+  id: String;
+  name: String;
+  email: String;
+}
+```
+
+Utiliser le dans la couche service:
+
+```ts
+public getCustomersList() : Observable<Array<Customer>>{ // any for result datatype
+    return this.http.get<Array<Customer>>("http://localhost:8080/customers");
+  }
+```
+
+On a utiliser le type interface pour le model car on l'utilise juste pour la lecture.
+
+Traiter les exceptions:
+
+customers.component.ts
+
+```ts
+ngOnInit(): void {
+
+    this.customers$ = this.customerService.getCustomersList().pipe(
+      catchError(err => {
+        this.errorMsg = err.message;
+        return throwError(err);
+      })
+    );
+}
+```
+
+Utiliser les templates:
+
+![26- tempales](./screenshots/26.JPG)
+
+```html
+<div class="container">
+  <ng-container *ngIf="customers$ | async; else errorAlert">
+    <app-customerstable
+      [customersList]="customers$ | async"
+      [errorObj]="errorObj"
+    ></app-customerstable>
+  </ng-container>
+
+  <ng-template #errorAlert>
+    <app-alert-component [alertMessage]="errorMsg"></app-alert-component>
+  </ng-template>
+</div>
+```
