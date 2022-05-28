@@ -1522,6 +1522,8 @@ Utiliser les icons de bootstrap:
 
 - ajouter dans le ficher css.
 
+styles.css/ ou les fichier css des components
+
 ```css
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 ```
