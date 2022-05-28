@@ -21,6 +21,9 @@
                 aria-describedby="addon-wrapping"
               />
             </div>
+            <p *ngIf="!addNewCustomerFromGroup.valid" class="text-danger">
+              Name must be at least 3 characters.
+            </p>
             <div class="input-group flex-nowrap mt-4">
               <input
                 formControlName="email"
@@ -31,6 +34,9 @@
                 aria-describedby="addon-wrapping"
               />
             </div>
+            <p *ngIf="!addNewCustomerFromGroup.valid" class="text-danger">
+              Enter a valid email (example@email.domain)
+            </p>
 
             <div
               class="btn-group mt-4"
@@ -44,7 +50,11 @@
               >
                 Cancel
               </a>
-              <button type="submit" class="btn btn-outline-primary">
+              <button
+                type="submit"
+                class="btn btn-outline-primary"
+                [disabled]="!addNewCustomerFromGroup.valid"
+              >
                 Save Customer
               </button>
             </div>

@@ -1533,3 +1533,24 @@ styles.css/ ou les fichier css des components
 ```html
 <i class="bi bi-search"></i>
 ```
+
+**Validations**
+
+```ts
+ngOnInit(): void {
+    this.addNewCustomerFromGroup = this.formBuilder.group({
+        name : this.formBuilder.control(null, [Validators.required, Validators.minLength(3)]), // validations
+        email: this.formBuilder.control(null, [Validators.required, Validators.email]),
+    });
+  }
+```
+
+```html
+<button
+  type="submit"
+  class="btn btn-outline-primary"
+  [disabled]="!addNewCustomerFromGroup.valid"
+></button>
+```
+
+02:40:00

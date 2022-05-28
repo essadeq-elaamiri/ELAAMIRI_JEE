@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -17,7 +21,13 @@ import java.util.List;
 public class Customer {
     @Id
     private String id;
+    @NotBlank
+    @NotNull
+    @Min(3)
     private String name;
+    @NotBlank
+    @NotNull
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "customer")// the same name used in BankAccount
