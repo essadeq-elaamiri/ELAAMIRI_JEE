@@ -1,1 +1,7 @@
-<app-customerstable [dataFromParent]="dataToChild"></app-customerstable>
+<div class="container">
+  <app-customerstable
+    [customersList]="customers"
+    [errorObj]="errorObj"
+    *ngIf="customers"
+  ></app-customerstable>
+</div>

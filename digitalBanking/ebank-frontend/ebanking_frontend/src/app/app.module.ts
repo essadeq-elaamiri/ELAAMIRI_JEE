@@ -8,6 +8,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { CustomersComponent } from './customers/customers.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { CustomerstableComponent } from './customerstable/customerstable.component';
+import { AlertComponentComponent } from './alert-component/alert-component.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CustomerstableComponent } from './customerstable/customerstable.compone
     NavbarComponent,
     CustomersComponent,
     AccountsComponent,
-    CustomerstableComponent
+    CustomerstableComponent,
+    AlertComponentComponent
   ],
   imports: [
     BrowserModule,

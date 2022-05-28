@@ -11,7 +11,6 @@ export class CustomersComponent implements OnInit {
   customers: any; // will be a model Customer
   errorObj: Object | undefined;
 
-  dataToChild: Object | undefined;
 
   //errorMessage!: String | undefined;
   //errorMessage: String | null=null; // default value
@@ -39,10 +38,7 @@ export class CustomersComponent implements OnInit {
     }
     );
 
-    this.dataToChild = {
-      customers : this.customers,
-       errorMessage: this.errorObj,
-    }
+
 
     // deprecated syntax
     /*
