@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { env } from 'process';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Customer } from '../models/customer.model';
 
 @Injectable({
@@ -16,7 +18,7 @@ export class CustomerServiceService {
   }
 */
   public getCustomersList(keyword: String="", page:number=0, size:number=5) : Observable<Array<Customer>>{ // any for result datatype
-    let link = `http://localhost:8080/customers?page=${page}&size=${size}&keyword=${keyword}`;
+    let link = environment.backendBaseURL + `/customers?page=${page}&size=${size}&keyword=${keyword}`;
     console.log(link);
 
     return this.http.get<Array<Customer>>(link);
