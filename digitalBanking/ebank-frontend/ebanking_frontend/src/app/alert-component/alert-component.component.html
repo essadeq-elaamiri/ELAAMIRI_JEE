@@ -1,1 +1,4 @@
-<p>alert-component works!</p>
+<div class="mt-4 mb-4 alert" [ngClass]="['alert-' + alertTypeStr]" role="alert">
+  Test
+  {{ alertMessage }}
+</div>

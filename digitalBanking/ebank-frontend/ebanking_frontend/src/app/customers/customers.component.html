@@ -1,7 +1,10 @@
 <div class="container">
   <app-customerstable
-    [customersList]="customers"
+    [customersList]="customers$ | async"
     [errorObj]="errorObj"
-    *ngIf="customers"
   ></app-customerstable>
+  <app-alert-component
+    *ngIf="errorObj"
+    [alertMessage]="errorMsg"
+  ></app-alert-component>
 </div>

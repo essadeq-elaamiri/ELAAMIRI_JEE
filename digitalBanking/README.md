@@ -1348,4 +1348,37 @@ constructor(private customerService: CustomerServiceService) { }
 
 ```
 
-01:10:00
+Pour afficher un objet en forma Json:
+
+```html
+<app-alert-component
+  *ngIf="errorObj"
+  [alertMessage]="errorObj | json"
+></app-alert-component>
+```
+
+Une autre approche : faire subscibe dans la partie HTML
+
+customers.component.ts
+
+```ts
+customers$: Observable<any> | undefined; // will be a model Customer
+  // convention de nomage : tous les variables de type Obesrvable, se termine avec un $
+ ngOnInit(): void {
+
+    this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
+
+ }
+```
+
+dans html
+
+```html
+<div class="container">
+  <app-customerstable
+    [customersList]="customers$ | async"
+    [errorObj]="errorObj"
+  ></app-customerstable>
+  <!-- customers$ | async, faire subscribe automatquement-->
+</div>
+```

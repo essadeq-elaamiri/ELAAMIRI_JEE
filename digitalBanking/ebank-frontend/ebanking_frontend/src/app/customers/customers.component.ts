@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CustomerServiceService } from '../services/customer-service.service';
 
 @Component({
@@ -8,9 +9,11 @@ import { CustomerServiceService } from '../services/customer-service.service';
   styleUrls: ['./customers.component.css']
 })
 export class CustomersComponent implements OnInit {
-  customers: any; // will be a model Customer
+  customers$!: Observable<any>; // will be a model Customer
+  // convention de nomage : tous les variables de type Obesrvable, se termine avec un $
+  //customers: any; // will be a model Customer
   errorObj: Object | undefined;
-
+  errorMsg: String | undefined;
 
   //errorMessage!: String | undefined;
   //errorMessage: String | null=null; // default value
@@ -23,6 +26,10 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
+
+
+    /*
     this.customerService.getCustomersList().subscribe(
       {
       next: data => {
@@ -31,12 +38,16 @@ export class CustomersComponent implements OnInit {
       error : err=> {
 
         this.errorObj = err;
+        this.errorMsg = err.message;
         console.error(err);
 
       }
 
     }
+
     );
+    */
+
 
 
 
