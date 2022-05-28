@@ -1,10 +1,35 @@
-<div class="container">
+<div class="container mt-3">
+  <ng-container *ngIf="customers$ | async; else loadingOrErrorAlert">
+    <app-customerstable
+      [customersList]="customers$ | async"
+      [errorObj]="errorObj"
+    ></app-customerstable>
+  </ng-container>
+
+  <ng-template #loadingOrErrorAlert>
+    <ng-container *ngIf="errorObj; else loading">
+      <app-alert-component [alertMessage]="errorMsg"></app-alert-component>
+    </ng-container>
+
+    <!-- loading-->
+    <ng-template #loading>
+      <app-loading-spinner></app-loading-spinner>
+    </ng-template>
+  </ng-template>
+</div>
+
+<!--
+  <div class="container">
   <app-customerstable
     [customersList]="customers$ | async"
     [errorObj]="errorObj"
+    *ngIf="customers$ | async"
   ></app-customerstable>
   <app-alert-component
     *ngIf="errorObj"
     [alertMessage]="errorMsg"
   ></app-alert-component>
 </div>
+
+// the same as !!
+-->

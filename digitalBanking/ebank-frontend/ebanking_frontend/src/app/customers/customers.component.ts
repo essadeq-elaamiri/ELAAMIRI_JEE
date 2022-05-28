@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
 
@@ -27,7 +27,16 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
+    this.customers$ = this.customerService.getCustomersList().pipe(
+      catchError(err => {
+        this.errorMsg = err.message;
+        this.errorObj = err;
+        return throwError(err);
+      })
+    ); //traiter les erreurs
+
+
+    //this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
 
 
     /*

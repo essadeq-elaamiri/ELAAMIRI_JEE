@@ -1400,3 +1400,40 @@ public getCustomersList() : Observable<Array<Customer>>{ // any for result datat
     return this.http.get<Array<Customer>>("http://localhost:8080/customers");
   }
 ```
+
+On a utiliser le type interface pour le model car on l'utilise juste pour la lecture.
+
+Traiter les exceptions:
+
+customers.component.ts
+
+```ts
+ngOnInit(): void {
+
+    this.customers$ = this.customerService.getCustomersList().pipe(
+      catchError(err => {
+        this.errorMsg = err.message;
+        return throwError(err);
+      })
+    );
+}
+```
+
+Utiliser les templates:
+
+![26- tempales](./screenshots/26.JPG)
+
+```html
+<div class="container">
+  <ng-container *ngIf="customers$ | async; else errorAlert">
+    <app-customerstable
+      [customersList]="customers$ | async"
+      [errorObj]="errorObj"
+    ></app-customerstable>
+  </ng-container>
+
+  <ng-template #errorAlert>
+    <app-alert-component [alertMessage]="errorMsg"></app-alert-component>
+  </ng-template>
+</div>
+```

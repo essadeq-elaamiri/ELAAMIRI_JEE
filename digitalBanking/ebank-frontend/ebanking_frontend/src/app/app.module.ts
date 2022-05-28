@@ -9,6 +9,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { AccountsComponent } from './accounts/accounts.component';
 import { CustomerstableComponent } from './customerstable/customerstable.component';
 import { AlertComponentComponent } from './alert-component/alert-component.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AlertComponentComponent } from './alert-component/alert-component.compo
     CustomersComponent,
     AccountsComponent,
     CustomerstableComponent,
-    AlertComponentComponent
+    AlertComponentComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
