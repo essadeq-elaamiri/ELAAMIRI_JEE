@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class CustomerRestController {
 
     // saving a customer
     @PostMapping("/customers")
-    public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerNotFoundException {
+    public CustomerDTO saveCustomer(@RequestBody @Valid  CustomerDTO customerDTO) throws CustomerNotFoundException {
         log.warn(customerDTO.getName());
         return customerService.saveCustomer(customerDTO);
     }

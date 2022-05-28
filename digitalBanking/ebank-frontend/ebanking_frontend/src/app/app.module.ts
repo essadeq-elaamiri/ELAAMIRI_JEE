@@ -12,6 +12,7 @@ import { AlertComponentComponent } from './alert-component/alert-component.compo
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchFormComponent } from './search-form/search-form.component';
+import { AddNewCustomerComponent } from './add-new-customer/add-new-customer.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SearchFormComponent } from './search-form/search-form.component';
     CustomerstableComponent,
     AlertComponentComponent,
     LoadingSpinnerComponent,
-    SearchFormComponent
+    SearchFormComponent,
+    AddNewCustomerComponent
   ],
   imports: [
     BrowserModule,

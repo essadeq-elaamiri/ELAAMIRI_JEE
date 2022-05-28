@@ -1,0 +1,66 @@
+<div class="container m-5 mb-5">
+  <div class="row">
+    <div class="col-8 offset-2">
+      <div class="card">
+        <div class="card-header">
+          <h1>Add new customer</h1>
+        </div>
+        <div class="card-body">
+          <form
+            *ngIf="addNewCustomerFromGroup"
+            [formGroup]="addNewCustomerFromGroup"
+            (ngSubmit)="addNewCustomer()"
+          >
+            <div class="input-group flex-nowrap mt-4">
+              <input
+                formControlName="name"
+                type="text"
+                class="form-control"
+                placeholder="Name"
+                aria-label="Name"
+                aria-describedby="addon-wrapping"
+              />
+            </div>
+            <p *ngIf="!addNewCustomerFromGroup.valid" class="text-danger">
+              Name must be at least 3 characters.
+            </p>
+            <div class="input-group flex-nowrap mt-4">
+              <input
+                formControlName="email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+                aria-label="Email"
+                aria-describedby="addon-wrapping"
+              />
+            </div>
+            <p *ngIf="!addNewCustomerFromGroup.valid" class="text-danger">
+              Enter a valid email (example@email.domain)
+            </p>
+
+            <div
+              class="btn-group mt-4"
+              role="group"
+              aria-label="Basic outlined example"
+            >
+              <a
+                type="button"
+                class="btn btn-outline-secondary"
+                routerLink="/customers"
+              >
+                Cancel
+              </a>
+              <button
+                type="submit"
+                class="btn btn-outline-primary"
+                [disabled]="!addNewCustomerFromGroup.valid"
+              >
+                Save Customer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

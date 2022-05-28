@@ -24,6 +24,11 @@ export class CustomerServiceService {
 
   }
 
+  public saveCustomer(customer: Customer): Observable<Customer>{
+    return this.http.post<Customer>( environment.backendBaseURL+"/customers", customer);
+
+  }
+
 }
 
 
