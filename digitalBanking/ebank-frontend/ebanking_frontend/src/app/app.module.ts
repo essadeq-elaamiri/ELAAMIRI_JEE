@@ -13,6 +13,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchFormComponent } from './search-form/search-form.component';
 import { AddNewCustomerComponent } from './add-new-customer/add-new-customer.component';
+import { CustomerAccountsComponent } from './customer-accounts/customer-accounts.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AddNewCustomerComponent } from './add-new-customer/add-new-customer.com
     AlertComponentComponent,
     LoadingSpinnerComponent,
     SearchFormComponent,
-    AddNewCustomerComponent
+    AddNewCustomerComponent,
+    CustomerAccountsComponent
   ],
   imports: [
     BrowserModule,
