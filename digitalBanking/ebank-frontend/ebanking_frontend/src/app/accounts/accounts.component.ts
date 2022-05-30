@@ -77,6 +77,7 @@ export class AccountsComponent implements OnInit {
           next: (resp) => {
             alert('Success ' + operationType);
             this.searchAccount();
+            this.operationFormGroup.reset();
           },
           error: (err) => {
             alert('Error: Operation failed !');
@@ -95,6 +96,7 @@ export class AccountsComponent implements OnInit {
             next: (resp) => {
               alert('Success ' + operationType);
               this.searchAccount();
+              this.operationFormGroup.reset();
             },
             error: (err) => {
               alert('Error: Operation failed !');
@@ -112,6 +114,7 @@ export class AccountsComponent implements OnInit {
             next: (resp) => {
               alert('Success ' + operationType);
               this.searchAccount();
+              this.operationFormGroup.reset();
             },
             error: (err) => {
               alert('Error: Operation failed !');
@@ -120,6 +123,6 @@ export class AccountsComponent implements OnInit {
           });
       }
     }
-    this.operationFormGroup.reset();
+
   }
 }
