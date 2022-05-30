@@ -118,10 +118,14 @@
       </div>
     </div>
     <div class="col col-6">
-      <div class="card">
+      <div class="card" *ngIf="accountHistory$">
         <div class="card-header">Operations</div>
         <div class="card-body">
-          <form [formGroup]="operationFormGroup" (ngSubmit)="applyOperation()">
+          <form
+            [formGroup]="operationFormGroup"
+            (ngSubmit)="applyOperation()"
+            method="post"
+          >
             <fieldset class="mb-3">
               <p>Select operation type</p>
               <select class="form-select" formControlName="operationType">
@@ -144,7 +148,10 @@
               </div>
             </fieldset>
 
-            <fieldset class="mb-3">
+            <fieldset
+              class="mb-3"
+              *ngIf="operationFormGroup.value.operationType == 'TRANSFER'"
+            >
               <p>Destination account's id</p>
               <div class="input-group">
                 <input type="text" class="form-control" />
@@ -163,6 +170,12 @@
                 formControlName="Description"
               ></textarea>
               <label for="floatingTextarea2">Description</label>
+            </div>
+
+            <div class="d-grid gap-2 mx-auto">
+              <button class="btn btn-warning" type="submit">
+                Save operation
+              </button>
             </div>
           </form>
         </div>
