@@ -118,7 +118,7 @@
       </div>
     </div>
     <div class="col col-6">
-      <div class="card" *ngIf="accountHistory$">
+      <div class="card" *ngIf="accountHistory$ | async as accountDetails">
         <div class="card-header">Operations</div>
         <div class="card-body">
           <form
@@ -161,13 +161,16 @@
               </div>
             </fieldset>
 
-            <div class="form-floating mb-3">
+            <div
+              class="form-floating mb-3"
+              *ngIf="operationFormGroup.value.operationType != 'TRANSFER'"
+            >
               <textarea
                 class="form-control"
                 placeholder="Leave a comment here"
                 id="floatingTextarea2"
                 style="height: 100px"
-                formControlName="Description"
+                formControlName="description"
               ></textarea>
               <label for="floatingTextarea2">Description</label>
             </div>

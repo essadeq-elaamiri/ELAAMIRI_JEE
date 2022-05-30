@@ -51,7 +51,8 @@ public class BankAccountRestController {
 
     @PostMapping("/accounts/credit")
     public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException {
-        accountOperationService.applyOperation(creditDTO.getAccountId(), creditDTO.getAmount(), OperationType.DEBIT, creditDTO.getDescription());
+        System.out.println(creditDTO);
+        accountOperationService.applyOperation(creditDTO.getAccountId(), creditDTO.getAmount(), OperationType.CREDIT, creditDTO.getDescription());
         return creditDTO;
     }
     @PostMapping("/accounts/transfer")

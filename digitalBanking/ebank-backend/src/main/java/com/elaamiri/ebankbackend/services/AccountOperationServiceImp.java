@@ -145,6 +145,7 @@ public class AccountOperationServiceImp implements AccountOperationService {
         accountOperationDTO.setDate(new Date());
         accountOperationDTO.setAmount(amount);
         accountOperationDTO.setDescription(description);
+        accountOperationDTO.setBankAccountDTO(account);
         // save operation
         saveOperation(accountOperationDTO);
         // update account data

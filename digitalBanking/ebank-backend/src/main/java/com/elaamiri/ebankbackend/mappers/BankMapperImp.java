@@ -50,7 +50,10 @@ public class BankMapperImp implements BankMapper{
         BeanUtils.copyProperties(savingAccount, savingAccountDTO);
         // le customer n'est pas chargé par defaut je pense car on utilise le mode LAZY.
         // je pense aussi que il ne va pas connaitre comment le mapper
-        savingAccountDTO.setCustomerDTO(dtoFromCustomer(savingAccount.getCustomer()));
+        if(savingAccount.getCustomer() != null){
+            savingAccountDTO.setCustomerDTO(dtoFromCustomer(savingAccount.getCustomer()));
+        }
+
         return savingAccountDTO;
     }
 

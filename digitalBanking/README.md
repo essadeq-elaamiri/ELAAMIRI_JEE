@@ -1623,3 +1623,5 @@ Recherche
 ![](./screenshots/29.JPG)
 
 ## Accounts Management
+
+![](./screenshots/30.JPG)
