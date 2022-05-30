@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { AccountHistory } from '../models/accountHistory.model';
 import { AccountsService } from '../services/accounts.service';
@@ -11,6 +11,7 @@ import { AccountsService } from '../services/accounts.service';
 })
 export class AccountsComponent implements OnInit {
   searchAccountFormGroup!: FormGroup;
+  operationFormGroup!: FormGroup;
   currentPage: number = 0;
   pageSize: number = 5;
   accountHistory$!: Observable<AccountHistory>;
@@ -20,6 +21,16 @@ export class AccountsComponent implements OnInit {
     this.searchAccountFormGroup = this.formBuilder.group(
       {accountId: this.formBuilder.control(''),}
 
+    );
+
+    this.operationFormGroup = this.formBuilder.group(
+      {
+        operationType: this.formBuilder.control(null),
+        operationAmount: this.formBuilder.control(100.0, Validators.min(100.0)),
+        destinationAccount:this.formBuilder.control(null), // will be displyed if it is transfer
+        description: this.formBuilder.control(null),
+
+      }
     );
   }
 
@@ -43,6 +54,10 @@ export class AccountsComponent implements OnInit {
   goToPage(page: number){
     this.currentPage = page;
     this.searchAccount();
+  }
+
+  applyOperation(){
+
   }
 
 }

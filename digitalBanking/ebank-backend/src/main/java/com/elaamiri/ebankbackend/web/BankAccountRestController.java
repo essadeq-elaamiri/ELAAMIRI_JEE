@@ -55,7 +55,7 @@ public class BankAccountRestController {
         return creditDTO;
     }
     @PostMapping("/accounts/transfer")
-    public TransferDTO transfer(@RequestBody TransferDTO transferDTO) throws AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException, TransferToTheSameAccountException {
+    public TransferDTO transfer(@RequestBody TransferDTO transferDTO) throws TransferToTheSameAccountException, AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException {
         accountOperationService.transfer(transferDTO.getSourceAccountId(), transferDTO.getDestinationAccountId(), transferDTO.getAmount());
         return transferDTO;
     }
