@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
@@ -15,9 +16,14 @@ export class CustomerstableComponent implements OnInit {
   @Input() deleteCustomer!: Function;
   @Input() customers$!: Observable<Array<Customer>>;
 
-  constructor(private customerService: CustomerServiceService) {}
+  constructor(private customerService: CustomerServiceService, private router: Router) {}
 
   ngOnInit(): void {
     //console.log(this.deleteCustomer);
+  }
+
+  handleCustomerAccountsList(customerId: String){
+    this.router.navigateByUrl("/customer-accounts/"+customerId);
+
   }
 }

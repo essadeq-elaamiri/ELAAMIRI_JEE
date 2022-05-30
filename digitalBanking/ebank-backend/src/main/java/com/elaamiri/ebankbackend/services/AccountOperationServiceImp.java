@@ -62,7 +62,8 @@ public class AccountOperationServiceImp implements AccountOperationService {
     @Override
     public List<AccountOperationDTO> getAccountOperations(String accountId, int page, int size) throws AccountNotFoundException {
         BankAccountDTO bankAccountDTO = bankAccountService.getBankAccountById(accountId);
-        List<AccountOperation> accountOperationList = operationRepository.getAccountOperationsByBankAccount(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size)).getContent();
+        //List<AccountOperation> accountOperationList = operationRepository.getAccountOperationsByBankAccount(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size)).getContent();
+        List<AccountOperation> accountOperationList = operationRepository.getAccountOperationsByBankAccountOrderByDateDesc(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size)).getContent();
         return accountOperationList.stream().map((accountOperation -> bankMapper.dtoFromAccountOperation(accountOperation))).collect(Collectors.toList());
     }
 
@@ -76,7 +77,8 @@ public class AccountOperationServiceImp implements AccountOperationService {
     public AccountHistoryDTO getAccountHistory(String accountId, int page, int size) throws AccountNotFoundException {
         AccountHistoryDTO accountHistoryDTO = new AccountHistoryDTO();
         BankAccountDTO bankAccountDTO = bankAccountService.getBankAccountById(accountId);
-        Page<AccountOperation> accountOperationPage = operationRepository.getAccountOperationsByBankAccount(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size));
+        //Page<AccountOperation> accountOperationPage = operationRepository.getAccountOperationsByBankAccount(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size));
+        Page<AccountOperation> accountOperationPage = operationRepository.getAccountOperationsByBankAccountOrderByDateDesc(bankMapper.bankAccountFromDTO(bankAccountDTO), PageRequest.of(page, size));
         List<AccountOperationDTO>  accountOperationDTOList= accountOperationPage.getContent().stream().map((accountOperation -> bankMapper.dtoFromAccountOperation(accountOperation))).collect(Collectors.toList());
 
         accountHistoryDTO.setAccountId(bankAccountDTO.getId());
@@ -122,6 +124,7 @@ public class AccountOperationServiceImp implements AccountOperationService {
         accountOperationDTO.setDate(new Date());
         accountOperationDTO.setAmount(amount);
         accountOperationDTO.setDescription(description);
+        accountOperationDTO.setBankAccountDTO(account);
 
         // save operation
         saveOperation(bankMapper.dtoFromAccountOperation(bankMapper.accountOperationFromDTO(accountOperationDTO)));
@@ -145,6 +148,7 @@ public class AccountOperationServiceImp implements AccountOperationService {
         accountOperationDTO.setDate(new Date());
         accountOperationDTO.setAmount(amount);
         accountOperationDTO.setDescription(description);
+        accountOperationDTO.setBankAccountDTO(account);
         // save operation
         saveOperation(accountOperationDTO);
         // update account data

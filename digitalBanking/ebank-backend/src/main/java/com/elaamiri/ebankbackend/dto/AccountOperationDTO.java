@@ -16,7 +16,7 @@ public class AccountOperationDTO {
     private double amount;
     private OperationType operationType;
 
-    //private BankAccountDTO bankAccountDTO;
+    private BankAccountDTO bankAccountDTO;
 
     private String description;
 }

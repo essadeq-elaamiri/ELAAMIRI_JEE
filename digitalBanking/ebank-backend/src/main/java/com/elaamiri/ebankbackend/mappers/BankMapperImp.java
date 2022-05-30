@@ -33,7 +33,9 @@ public class BankMapperImp implements BankMapper{
     public CurrentAccountDTO dtoFromCurrentAccount(CurrentAccount currentAccount) {
         CurrentAccountDTO currentAccountDTO = new CurrentAccountDTO();
         BeanUtils.copyProperties(currentAccount, currentAccountDTO);
-        currentAccountDTO.setCustomerDTO(dtoFromCustomer(currentAccount.getCustomer()));
+        if(currentAccount.getCustomer() != null){
+            currentAccountDTO.setCustomerDTO(dtoFromCustomer(currentAccount.getCustomer()));
+        }
         return currentAccountDTO;
     }
 
@@ -50,7 +52,10 @@ public class BankMapperImp implements BankMapper{
         BeanUtils.copyProperties(savingAccount, savingAccountDTO);
         // le customer n'est pas chargé par defaut je pense car on utilise le mode LAZY.
         // je pense aussi que il ne va pas connaitre comment le mapper
-        savingAccountDTO.setCustomerDTO(dtoFromCustomer(savingAccount.getCustomer()));
+        if(savingAccount.getCustomer() != null){
+            savingAccountDTO.setCustomerDTO(dtoFromCustomer(savingAccount.getCustomer()));
+        }
+
         return savingAccountDTO;
     }
 
@@ -94,13 +99,17 @@ public class BankMapperImp implements BankMapper{
     public AccountOperationDTO dtoFromAccountOperation(AccountOperation accountOperation){
         AccountOperationDTO accountOperationDTO = new AccountOperationDTO();
         BeanUtils.copyProperties(accountOperation, accountOperationDTO);
-        //accountOperationDTO.setBankAccountDTO(dtoFromBankAccount(accountOperation.getBankAccount()));
+        if(accountOperation.getBankAccount() != null){
+            accountOperationDTO.setBankAccountDTO(dtoFromBankAccount(accountOperation.getBankAccount()));
+        }
+
         return accountOperationDTO;
     }
     @Override
     public AccountOperation accountOperationFromDTO(AccountOperationDTO accountOperationDTO){
         AccountOperation accountOperation = new AccountOperation();
         BeanUtils.copyProperties(accountOperationDTO, accountOperation);
+        accountOperation.setBankAccount(bankAccountFromDTO(accountOperationDTO.getBankAccountDTO()));
         return accountOperation;
     }
 
