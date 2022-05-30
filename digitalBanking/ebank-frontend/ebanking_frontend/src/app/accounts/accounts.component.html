@@ -71,7 +71,15 @@
                         {{ operation.amount | number: "1.2-2" }}
                       </td>
                       <td>
-                        {{ operation.operationType }}
+                        <span
+                          class="badge rounded-pill"
+                          [ngClass]="
+                            operation.operationType.includes('DEBIT')
+                              ? 'bg-success'
+                              : 'bg-danger'
+                          "
+                          >{{ operation.operationType }}</span
+                        >
                       </td>
                     </tr>
                   </tbody>
