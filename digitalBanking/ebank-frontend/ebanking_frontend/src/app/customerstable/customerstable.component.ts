@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { Customer } from '../models/customer.model';
+import { CustomerServiceService } from '../services/customer-service.service';
 
 @Component({
   selector: 'app-customerstable',
@@ -9,8 +12,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CustomerstableComponent implements OnInit {
   @Input() customersList: any; // get data from parent
   @Input() errorObj: Object | undefined;
+  @Input() deleteCustomer!: Function;
+  @Input() customers$!: Observable<Array<Customer>>;
 
-  constructor() {}
+  constructor(private customerService: CustomerServiceService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    //console.log(this.deleteCustomer);
+  }
 }

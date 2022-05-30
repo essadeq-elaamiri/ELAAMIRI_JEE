@@ -34,6 +34,8 @@
     <app-customerstable
       [customersList]="customers$ | async"
       [errorObj]="errorObj"
+      [deleteCustomer]="deleteCustomer"
+      [customers$]="customers$"
     ></app-customerstable>
   </ng-container>
 

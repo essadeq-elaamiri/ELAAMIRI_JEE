@@ -13,7 +13,7 @@
           <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Email@</th>
-          <th scope="col">Action</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody *ngFor="let customer of customersList">
@@ -22,6 +22,14 @@
           <td>{{ customer.name | uppercase }}</td>
           <!-- pipe-->
           <td>{{ customer.email }}</td>
+          <td>
+            <button class="btn btn-sm" (click)="deleteCustomer(customer)">
+              <i class="bi bi-trash text-danger"></i>
+            </button>
+            <button class="btn btn-sm">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

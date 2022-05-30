@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { AlertType } from '../alert-component/alert-component.component';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
@@ -60,6 +60,27 @@ export class CustomersComponent implements OnInit {
       this.customers$ = this.customerService.getCustomersList(this.customersSearchformGroup?.value["searchKeyword"]);
     }
 
+    deleteCustomer(customer: Customer){
+      if(confirm("Want to delete customer "+ customer.name +"?"))
+      console.log(this.customerService);
+      this.customerService.removeCustomer(customer.id).subscribe({
+        next: (resp: Object)=>{
+          this.customers$ = this.customers$.pipe(
+            map(data=>{
+              let index = data.indexOf(customer);
+              data.slice(index, 1);
+              return data;
+            })
+          );
+        },
+        error: err=>{
+          //this.errorMsg = err.message;
+          //this.errorObj = err;
+          console.log(err);
+        }
+      });
+
+  }
     //======================== where in ngOnInit()
     //this.customers$ = this.customerService.getCustomersList(); // et faire subscibe dans html
 

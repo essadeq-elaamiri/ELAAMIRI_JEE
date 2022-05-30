@@ -29,6 +29,11 @@ export class CustomerServiceService {
 
   }
 
+  public removeCustomer(customerId: String){
+    return this.http.delete( environment.backendBaseURL+"/customers/"+ customerId);
+
+  }
+
 }
 
 
