@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
 
@@ -10,7 +11,7 @@ import { CustomerServiceService } from '../services/customer-service.service';
 })
 export class AddNewCustomerComponent implements OnInit {
 
-  constructor(private customerService: CustomerServiceService , private formBuilder: FormBuilder) { }
+  constructor(private customerService: CustomerServiceService , private formBuilder: FormBuilder, private router:Router) { }
 
   addNewCustomerFromGroup: FormGroup | undefined;
   constomer: Customer | undefined;
@@ -26,7 +27,8 @@ export class AddNewCustomerComponent implements OnInit {
     this.constomer = this.addNewCustomerFromGroup?.value;
     this.customerService.saveCustomer(this.constomer!).subscribe({
       next: data =>{
-        alert("addrd")
+        //alert("added")
+        this.router.navigate(['/customers', {cusomerName:data.name}]);
       },
       error: err=>{
         console.error(err);

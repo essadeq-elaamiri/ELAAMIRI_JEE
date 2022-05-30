@@ -26,9 +26,16 @@
   </form>
 
   <ng-container *ngIf="customers$ | async; else loadingOrErrorAlert">
+    <app-alert-component
+      *ngIf="savedCustomerName"
+      [alertMessage]="savingCustomerMessage"
+      [alertType]="alertType"
+    ></app-alert-component>
     <app-customerstable
       [customersList]="customers$ | async"
       [errorObj]="errorObj"
+      [deleteCustomer]="deleteCustomer"
+      [customers$]="customers$"
     ></app-customerstable>
   </ng-container>
 

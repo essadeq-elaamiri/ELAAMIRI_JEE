@@ -1462,7 +1462,7 @@ Ajouter le loading
 </div>
 ```
 
-**Utiliser ReactiveFormsModule**
+**Utiliser ReactiveFormsModule (Ajouter utilisateur)**
 
 - Importer le dans `app.module.ts` [lib: `import { ReactiveFormsModule } from '@angular/forms';`]
 - Declarer une variable `formGroup: FormGroup` pour l'associer à une forme.
@@ -1553,4 +1553,21 @@ ngOnInit(): void {
 ></button>
 ```
 
-02:40:00
+Code ajout:
+
+```ts
+  constructor(private customerService: CustomerServiceService , private formBuilder: FormBuilder, private router:Router) { }
+....
+ addNewCustomer(){
+    this.constomer = this.addNewCustomerFromGroup?.value;
+    this.customerService.saveCustomer(this.constomer!).subscribe({
+      next: data =>{
+        //alert("added")
+        this.router.navigate(['/customers', {customerName: data.name}]); // redirection
+      },
+      error: err=>{
+        console.error(err);
+      }
+    });
+  }
+```

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ public class Customer {
     private String id;
     @NotBlank
     @NotNull
-    @Min(3)
+    @Length(min = 3)
     private String name;
     @NotBlank
     @NotNull
