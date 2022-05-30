@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-accounts',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsComponent implements OnInit {
-
-  constructor() { }
+  searchAccountFormGroup!: FormGroup;
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
+    this.searchAccountFormGroup = this.formBuilder.group(
+      {accountId: this.formBuilder.control(''),}
+
+    );
+  }
+
+  searchAccount(){
+    alert(this.searchAccountFormGroup.value.accountId);
   }
 
 }

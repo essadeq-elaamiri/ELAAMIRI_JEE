@@ -1621,3 +1621,5 @@ List des customers
 Recherche
 
 ![](./screenshots/29.JPG)
+
+## Accounts Management
