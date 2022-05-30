@@ -13,14 +13,17 @@ export class AlertComponentComponent implements OnInit {
   constructor() { }
 
 
-  @Input() alertType: AlertType = AlertType.danger;
+  @Input() alertType!: AlertType ;
   @Input() alertMessage: String | undefined;
-
-  alertTypeStr: String = AlertType[this.alertType];
+  alertTypeStr: String = "info";
   ngOnInit(): void {
+      this.alertTypeStr = AlertType[this.alertType];
+
   }
 
 }
+
+
 
 export enum AlertType {
   danger,

@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
+import { AlertType } from '../alert-component/alert-component.component';
 import { Customer } from '../models/customer.model';
 import { CustomerServiceService } from '../services/customer-service.service';
 
@@ -26,7 +28,11 @@ export class CustomersComponent implements OnInit {
 
 
   /*constructor(private http:HttpClient) { }*/
-  constructor(private customerService: CustomerServiceService, private formBuilder: FormBuilder) { } // injection
+  constructor(private customerService: CustomerServiceService, private formBuilder: FormBuilder, private route :ActivatedRoute) { } // injection
+
+  savedCustomerName: String | null = null;
+  savingCustomerMessage: String|undefined;
+  alertType!: AlertType;
 
   ngOnInit(): void {
 
@@ -42,6 +48,11 @@ export class CustomersComponent implements OnInit {
         return throwError(err);
       })
     ); //traiter les erreurs
+
+    this.savedCustomerName = this.route.snapshot.paramMap.get("cusomerName") ;
+    this.savingCustomerMessage = "Customer "+this.savedCustomerName+ " was saved successfully!";
+    this.alertType = this.savedCustomerName? AlertType.success : AlertType.info;
+    console.log(this.savedCustomerName);
     }
 
     searchCustomers(){
