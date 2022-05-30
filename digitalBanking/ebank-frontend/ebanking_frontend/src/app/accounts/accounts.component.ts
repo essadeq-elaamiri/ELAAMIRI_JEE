@@ -120,5 +120,6 @@ export class AccountsComponent implements OnInit {
           });
       }
     }
+    this.operationFormGroup.reset();
   }
 }
