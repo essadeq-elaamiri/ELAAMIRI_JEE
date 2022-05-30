@@ -25,3 +25,13 @@ A basic practical activity (Web application to manage patients), using Java Spri
 ### [Activity 4](https://github.com/essadeq-elaamiri/Students-manager-Spring-activity)
 
 A basic practical activity (Web application to manage students), using Java Spring 5 (SpringBoot, Spring MVC/ thymeleaf, Spring security and Spring Data JPA) [video_demo](https://youtu.be/oj51qMF1_So).
+
+### [Digital banking activity](https://github.com/essadeq-elaamiri/ELAAMIRI_JEE/tree/main/digitalBanking)
+
+General activity using Spring as backend and angular as frontend.
+TO DO:
+
+- [x] Spring rest API
+- [x] Angular besed frontend
+- [ ] JWT based authentication
+- [ ] Flutter based frontend
