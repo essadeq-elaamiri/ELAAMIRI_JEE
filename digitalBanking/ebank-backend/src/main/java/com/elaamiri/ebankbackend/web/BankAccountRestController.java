@@ -57,6 +57,7 @@ public class BankAccountRestController {
     }
     @PostMapping("/accounts/transfer")
     public TransferDTO transfer(@RequestBody TransferDTO transferDTO) throws TransferToTheSameAccountException, AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException {
+        System.out.println(transferDTO);
         accountOperationService.transfer(transferDTO.getSourceAccountId(), transferDTO.getDestinationAccountId(), transferDTO.getAmount());
         return transferDTO;
     }

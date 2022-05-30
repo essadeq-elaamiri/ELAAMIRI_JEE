@@ -75,8 +75,8 @@
                           class="badge rounded-pill"
                           [ngClass]="
                             operation.operationType.includes('DEBIT')
-                              ? 'bg-success'
-                              : 'bg-danger'
+                              ? 'bg-danger'
+                              : 'bg-success'
                           "
                           >{{ operation.operationType }}</span
                         >
@@ -154,7 +154,11 @@
             >
               <p>Destination account's id</p>
               <div class="input-group">
-                <input type="text" class="form-control" />
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="destinationAccount"
+                />
                 <span class="input-group-text">
                   <i class="bi bi-person-fill"></i>
                 </span>

@@ -28,7 +28,7 @@ export class AccountsComponent implements OnInit {
     this.operationFormGroup = this.formBuilder.group({
       operationType: this.formBuilder.control(null),
       operationAmount: this.formBuilder.control(100.0, Validators.min(100.0)),
-      destinationAccount: this.formBuilder.control(null), // will be displyed if it is transfer
+      destinationAccount: this.formBuilder.control(null, Validators.required), // will be displyed if it is transfer
       description: this.formBuilder.control(null),
     });
   }
