@@ -1,4 +1,4 @@
-export interface AccountOperationDTOList {
+export interface AccountOperation {
     id:            number;
     date:          Date;
     amount:        number;

@@ -1,4 +1,4 @@
-import { AccountOperationDTOList } from "./accountOperation.mdel";
+import { AccountOperation } from "./accountOperation.mdel";
 
 export interface AccountHistory {
     accountId:               string;
@@ -6,6 +6,6 @@ export interface AccountHistory {
     currentPage:             number;
     totalPages:              number;
     pageSize:                number;
-    accountOperationDTOList: AccountOperationDTOList[];
+    accountOperationDTOList: AccountOperation[];
 }
 

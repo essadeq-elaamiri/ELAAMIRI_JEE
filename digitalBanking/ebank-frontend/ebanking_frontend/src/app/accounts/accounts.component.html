@@ -27,6 +27,85 @@
               </button>
             </div>
           </form>
+
+          <ng-container
+            *ngIf="accountHistory$ | async as accountDetails; else errorAlert"
+          >
+            <div class="card mb-3 mt-2">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <b>Account ID:</b>
+                  {{ accountDetails.accountId }}
+                </li>
+                <li class="list-group-item">
+                  <b>Account balance </b>
+                  {{ accountDetails.balance | number: "1.2-2" }}
+                </li>
+                <li class="list-group-item">
+                  <b>Account Operations:</b>
+                  {{ accountDetails.accountOperationDTOList.length }}
+                </li>
+              </ul>
+            </div>
+            <div class="card mb-3 mt-3">
+              <div class="card-header">Account Operations</div>
+              <div class="card-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let operation of accountDetails.accountOperationDTOList
+                      "
+                    >
+                      <th scope="row">{{ operation.id }}</th>
+                      <td>{{ operation.date | date: "dd-MM-YY HH:mm:ss" }}</td>
+                      <td class="text-end">
+                        {{ operation.amount | number: "1.2-2" }}
+                      </td>
+                      <td>
+                        {{ operation.operationType }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="pa">
+                  <ul class="nav nav-pills">
+                    <li
+                      *ngFor="
+                        let pageItem of [].constructor(
+                          accountDetails.totalPages
+                        );
+                        let page = index
+                      "
+                    >
+                      <a
+                        class="btn btn-sm ms-1"
+                        (click)="goToPage(page)"
+                        [ngClass]="
+                          page == currentPage ? 'btn-info' : 'btn-outline-info'
+                        "
+                        >{{ page }}</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #errorAlert>
+            <app-alert-component
+              [alertMessage]="'Account not found'"
+              [alertType]="0"
+            ></app-alert-component>
+          </ng-template>
         </div>
       </div>
     </div>
