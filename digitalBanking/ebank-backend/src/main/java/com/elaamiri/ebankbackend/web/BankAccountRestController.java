@@ -1,11 +1,8 @@
 package com.elaamiri.ebankbackend.web;
 
-import com.elaamiri.ebankbackend.dto.AccountHistoryDTO;
-import com.elaamiri.ebankbackend.dto.AccountOperationDTO;
-import com.elaamiri.ebankbackend.dto.BankAccountDTO;
-import com.elaamiri.ebankbackend.dto.CurrentAccountDTO;
-import com.elaamiri.ebankbackend.exceptions.AccountNotFoundException;
-import com.elaamiri.ebankbackend.exceptions.CustomerNotFoundException;
+import com.elaamiri.ebankbackend.dto.*;
+import com.elaamiri.ebankbackend.entities.enumerations.OperationType;
+import com.elaamiri.ebankbackend.exceptions.*;
 import com.elaamiri.ebankbackend.services.interfaces.AccountOperationService;
 import com.elaamiri.ebankbackend.services.interfaces.BankAccountService;
 import lombok.AllArgsConstructor;
@@ -44,6 +41,23 @@ public class BankAccountRestController {
     @PostMapping("/accounts")
     public BankAccountDTO saveBankAccount(@RequestBody BankAccountDTO bankAccountDTO) throws AccountNotFoundException, CustomerNotFoundException {
         return  bankAccountService.saveAccount(bankAccountDTO);
+    }
+
+    @PostMapping("/accounts/debit")
+    public DebitDTO debit(@RequestBody DebitDTO debitDTO) throws AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException {
+        accountOperationService.applyOperation(debitDTO.getAccountId(), debitDTO.getAmount(), OperationType.DEBIT, debitDTO.getDescription());
+        return debitDTO;
+    }
+
+    @PostMapping("/accounts/credit")
+    public CreditDTO credit(@RequestBody CreditDTO creditDTO) throws AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException {
+        accountOperationService.applyOperation(creditDTO.getAccountId(), creditDTO.getAmount(), OperationType.DEBIT, creditDTO.getDescription());
+        return creditDTO;
+    }
+    @PostMapping("/accounts/transfer")
+    public TransferDTO transfer(@RequestBody TransferDTO transferDTO) throws AccountNotFoundException, BalanceNotSufficientException, OperationFailedException, CustomerNotFoundException, TransferToTheSameAccountException {
+        accountOperationService.transfer(transferDTO.getSourceAccountId(), transferDTO.getDestinationAccountId(), transferDTO.getAmount());
+        return transferDTO;
     }
 
 }
