@@ -1571,3 +1571,53 @@ Code ajout:
     });
   }
 ```
+
+**Afficher les erreurs (Ajouter un Customer)**
+
+```html
+<p
+  *ngIf="
+                addNewCustomerFromGroup.controls['name'].touched &&
+                addNewCustomerFromGroup.controls['name'].errors &&
+                addNewCustomerFromGroup.controls['name'].errors!['required']
+              "
+  class="text-danger"
+>
+  Name is required
+</p>
+```
+
+![27](./screenshots/27.JPG)
+
+**Supprimer un Customer**
+
+```ts
+  deleteCustomer(customer: Customer){
+      if(confirm("Want to delete customer "+ customer.name +"?"))
+      console.log(this.customerService);
+      this.customerService.removeCustomer(customer.id).subscribe({
+        next: (resp: Object)=>{
+          this.customers$ = this.customers$.pipe(
+            map(data=>{
+              let index = data.indexOf(customer);
+              data.slice(index, 1);
+              return data;
+            })
+          );
+        },
+        error: err=>{
+          //this.errorMsg = err.message;
+          //this.errorObj = err;
+          console.log(err);
+        }
+      });
+  }
+```
+
+List des customers
+
+![](./screenshots/28.JPG)
+
+Recherche
+
+![](./screenshots/29.JPG)
