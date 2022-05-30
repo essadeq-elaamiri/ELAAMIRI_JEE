@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { AccountHistory } from '../models/accountHistory.model';
 import { AccountsService } from '../services/accounts.service';
 
@@ -15,6 +15,7 @@ export class AccountsComponent implements OnInit {
   currentPage: number = 0;
   pageSize: number = 5;
   accountHistory$!: Observable<AccountHistory>;
+  errorObj: Object | undefined;
   constructor(
     private formBuilder: FormBuilder,
     private accountService: AccountsService
@@ -22,7 +23,7 @@ export class AccountsComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchAccountFormGroup = this.formBuilder.group({
-      accountId: this.formBuilder.control(''),
+      accountId: this.formBuilder.control(null),
     });
 
     this.operationFormGroup = this.formBuilder.group({
@@ -40,7 +41,10 @@ export class AccountsComponent implements OnInit {
       accountId,
       this.currentPage,
       this.pageSize
-    );
+    ).pipe(catchError(err=>{
+      this.errorObj = err;
+      return throwError(err);
+    }));
     /*
     this.accountService.getAccount(accountId, this.currentPage, this.pageSize).subscribe({
       next: accountHistory => {

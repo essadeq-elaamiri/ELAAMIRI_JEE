@@ -109,10 +109,15 @@
             </div>
           </ng-container>
           <ng-template #errorAlert>
-            <app-alert-component
-              [alertMessage]="'Account not found'"
-              [alertType]="0"
-            ></app-alert-component>
+            <ng-container *ngIf="errorObj != undefined">
+              <app-alert-component
+                [alertMessage]="'Account not found'"
+                [alertType]="0"
+              ></app-alert-component>
+            </ng-container>
+            <ng-template #loading>
+              <app-loading-spinner></app-loading-spinner>
+            </ng-template>
           </ng-template>
         </div>
       </div>
