@@ -1755,3 +1755,43 @@ export class AccountsComponent implements OnInit {
 </details>
 
 ### Customer accounts
+
+Envoyer l'id dans URL:
+
+```ts
+constructor(private customerService: CustomerServiceService, private router: Router) {}
+
+  ngOnInit(): void {
+    //console.log(this.deleteCustomer);
+  }
+
+  handleCustomerAccountsList(customerId: String){
+    this.router.navigateByUrl("/customer-accounts/"+customerId);
+
+  }
+```
+
+dans routing
+
+```ts
+const routes: Routes = [
+  { path: "customers", component: CustomersComponent },
+  { path: "accounts", component: AccountsComponent },
+  { path: "new-customer", component: AddNewCustomerComponent },
+  { path: "customer-accounts/:id", component: CustomerAccountsComponent },
+];
+```
+
+Récupérer l'id
+
+```ts
+export class CustomerAccountsComponent implements OnInit {
+  customerId!: String;
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.customerId = this.route.snapshot.params["id"]; // retrieve id from url
+    //
+  }
+}
+```
